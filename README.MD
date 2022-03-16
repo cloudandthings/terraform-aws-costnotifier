@@ -19,7 +19,7 @@ module "billing_notifier_root_account" {
   source = "github.com/cloudandthings/terraform-aws-costnotifier"
 
   naming_prefix     = local.naming_prefix
-  slack_webhook_url = "https://hooks.slack.com/services/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"
+  slack_webhook_url = "https://api.slack.com/messaging/webhooks"
   account_name      = "cloudandthings - master"
 
 }
