@@ -185,7 +185,7 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
     else:
         summary = f"Yesterday's cost for account {account_name} was ${total_costs[-1]:,.2f}"
 
-    hook_url = os.environ.get('SLACK_WEBHOOK_URL')
+    hook_url = os.environ.get('WEBHOOK_URL')
     if hook_url:
         resp = requests.post(
             hook_url,

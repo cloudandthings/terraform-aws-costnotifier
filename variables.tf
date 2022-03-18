@@ -3,7 +3,7 @@ variable "naming_prefix" {
   description = "(optional) describe your variable"
 }
 
-variable "slack_webhook_url" {
+variable "webhook_url" {
   type = string
   description = "(optional) describe your variable"
 }

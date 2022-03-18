@@ -48,7 +48,7 @@ module "billing_notifier_lambda" {
 
   environment = {
     variables = {
-      SLACK_WEBHOOK_URL = var.slack_webhook_url
+      WEBHOOK_URL       = var.webhook_url
       AWS_ACCOUNT_NAME  = var.account_name
     }
   }
