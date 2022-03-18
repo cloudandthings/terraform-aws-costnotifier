@@ -1,6 +1,5 @@
 resource "aws_cloudwatch_event_rule" "billing_notifier_lambda_event_rule" {
-  name                = "everyday-8PM"
-  schedule_expression = "cron(0 20 * * ? *)"
+  schedule_expression = var.notifcation_schedule
 }
 
 resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
@@ -48,7 +47,7 @@ module "billing_notifier_lambda" {
 
   environment = {
     variables = {
-      SLACK_WEBHOOK_URL = var.slack_webhook_url
+      WEBHOOK_URL       = var.webhook_url
       AWS_ACCOUNT_NAME  = var.account_name
     }
   }
