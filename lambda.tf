@@ -1,6 +1,5 @@
 resource "aws_cloudwatch_event_rule" "billing_notifier_lambda_event_rule" {
-  name                = "everyday-8PM"
-  schedule_expression = "cron(0 20 * * ? *)"
+  schedule_expression = var.notifcation_schedule
 }
 
 resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
