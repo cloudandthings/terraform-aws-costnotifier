@@ -15,6 +15,6 @@ variable "account_name" {
 
 variable "notifcation_schedule" {
   type = string
-  description = "(optional) CRON expression to schedule alert"
+  description = "(optional) CRON expression to schedule notification"
   default = "cron(0 20 * * ? *)"
 }
