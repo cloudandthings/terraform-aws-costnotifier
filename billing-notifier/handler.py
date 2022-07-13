@@ -86,7 +86,7 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
         logging.critical(f"report_cost, an error occurred when determining date range. Error: '{e}'.")
         raise Exception(e)
 
-    logging.info(f"report_cost, data list for processing: '{list_of_dates}'.")
+    logging.debug(f"report_cost, date list for processing: '{list_of_dates}'.")
 
     try:
         # Get account name from env, or account id/account alias from boto3
@@ -189,14 +189,14 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
         most_expensive_yesterday = sorted(cost_per_day_by_service.items(), key=lambda i: i[1][-1], reverse=True)
 
         service_names = [k for k,_ in most_expensive_yesterday[:5]]
-        longest_name_len = len(max(service_names, key = len))
+        longest_name_len = len(max(service_names, key=len))
 
         buffer = f"{'Service':{longest_name_len}} ${'Yday':8} {'∆%':>5} {'Last 7d':7}\n"
 
         for service_name, costs in most_expensive_yesterday[:5]:
             buffer += f"{service_name:{longest_name_len}} ${costs[-1]:8,.2f} {delta(costs):4.0f}% {sparkline(costs):7}\n"
 
-        other_costs = [0.0] * n_days
+        other_costs = [0.0] * (n_days + 1)
         for service_name, costs in most_expensive_yesterday[5:]:
             for i, cost in enumerate(costs):
                 other_costs[i] += cost
@@ -284,6 +284,7 @@ if __name__ == "__main__":
 
     # New Method with 2 example jsons
     cost_dict = report_cost(None, None, example_result, yesterday="2021-08-23", new_method=True)
+
     assert "{0:.2f}".format(cost_dict.get("total", 0.0)) == "286.37", f'{cost_dict.get("total"):,.2f} != 286.37'    
     cost_dict = report_cost(None, None, example_result2, yesterday="2021-08-29", new_method=True)
     assert "{0:.2f}".format(cost_dict.get("total", 0.0)) == "21.45", f'{cost_dict.get("total"):,.2f} != 21.45'
