@@ -41,7 +41,7 @@ def sparkline(datapoints):
 def delta(costs):
     """
     Calculate delta on passed costs.
-    :param costs: The cost data that requires a data calculated.
+    :param costs: The cost data that requires a delta calculated.
     :return:
     """
 
