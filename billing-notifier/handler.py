@@ -3,7 +3,6 @@ import boto3
 import datetime
 import os
 import requests
-import sys
 import logging
 
 n_days = 7
@@ -82,7 +81,7 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
             (week_ago + datetime.timedelta(days=x)).strftime('%Y-%m-%d')
             for x in range(n_days)
         ]
-        list_of_dates += yesterday
+        list_of_dates.append(yesterday)
     except Exception as e:
         logging.critical(f"report_cost, an error occurred when determining date range. Error: '{e}'.")
         raise Exception(e)
