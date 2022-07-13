@@ -63,9 +63,9 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
     Lambda handler, handles all processing for cost notifier.
     :param event: Unused
     :param context: Unused
-    :param result:
+    :param result: Determine if Cost Explorer should be queried for a result or not.
     :param yesterday: Stipulate the yesterday date you would like to run against.
-    :param new_method:
+    :param new_method: Stipulate if the new method of service array creation should be used.
     :return:
     """
 
@@ -81,7 +81,8 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
         list_of_dates = [
             (week_ago + datetime.timedelta(days=x)).strftime('%Y-%m-%d')
             for x in range(n_days)
-        ]  # TODO: Determine why yesterday is not here.
+        ]
+        list_of_dates += yesterday
     except Exception as e:
         logging.critical(f"report_cost, an error occurred when determining date range. Error: '{e}'.")
         raise Exception(e)
@@ -184,8 +185,8 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
             logging.critical(f"report_cost, an error occurred when building new method service array. Error: '{e}'.")
             raise Exception(e)
 
-    # Sort the map by yesterday's cost
     try:
+        # Sort the map by yesterday's cost
         most_expensive_yesterday = sorted(cost_per_day_by_service.items(), key=lambda i: i[1][-1], reverse=True)
 
         service_names = [k for k,_ in most_expensive_yesterday[:5]]
