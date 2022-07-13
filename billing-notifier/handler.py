@@ -42,9 +42,8 @@ def delta(costs):
     """
     Calculate delta on passed costs.
     :param costs: The cost data that requires a delta calculated.
-    :return:
+    :return: Returns the delta for the costs.
     """
-
     try:
         if len(costs) > 1 and costs[-1] >= 1 and costs[-2] >= 1:
             # This only handles positive numbers
@@ -81,6 +80,7 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
             (week_ago + datetime.timedelta(days=x)).strftime('%Y-%m-%d')
             for x in range(n_days)
         ]
+        # range in for loop never includes yesterday. Include it.
         list_of_dates.append(yesterday)
     except Exception as e:
         logging.critical(f"report_cost, an error occurred when determining date range. Error: '{e}'.")
