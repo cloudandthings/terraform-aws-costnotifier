@@ -17,7 +17,7 @@ sparks = ['▁', '▂', '▃', '▄', '▅', '▆', '▇']
 def sparkline(datapoints):
     """
     Pretty graph formatting for datapoints.
-    :param datapoints:
+    :param datapoints: The datapoints to be formatted.
     :return: Formatted line
     """
     try:
