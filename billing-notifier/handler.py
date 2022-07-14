@@ -4,6 +4,7 @@ import datetime
 import os
 import requests
 import logging
+import json
 
 n_days = 7
 yesterday = datetime.datetime.today() - datetime.timedelta(days=1)
@@ -54,6 +55,39 @@ def delta(costs):
         logging.critical(f"delta, an error occurred when determining delta. Error: '{e}'.")
         raise Exception(e)
     return result
+
+
+def send_notifications(buffer, summary):
+    try:
+        hook_urls = json.loads(os.environ.get('WEBHOOK_URLS'))
+        for url in hook_urls:
+            if url:
+                resp = requests.post(
+                    url,
+                    json={
+                        "text": summary + "\n\n```\n" + buffer + "\n```",
+                    }
+                )
+
+                if resp.status_code != 200:
+                    print("HTTP %s: %s" % (resp.status_code, resp.text))
+            else:
+                print(summary)
+                print(buffer)
+    except Exception as e:
+        logging.critical(f"send_notifications, an error occurred sending webhook: '{e}'.")
+        raise Exception(e)
+
+    try:
+        topic_arn = os.environ.get('SNS_ARN')
+        if topic_arn:
+            sns_client = boto3.client("sns")
+            sns_client.publish(TopicArn=topic_arn,
+                               Message=summary + str("\n\n" + buffer + "\n"),
+                               Subject="AWS Daily Cost Notifications")
+    except Exception as e:
+        logging.critical(f"send_notifications, an error occurred publishing to sns: '{e}'.")
+        raise Exception(e)
 
 
 def report_cost(event, context, result: dict = None, yesterday: str = None, new_method=True):
@@ -251,24 +285,7 @@ def report_cost(event, context, result: dict = None, yesterday: str = None, new_
         logging.critical(f"report_cost, an error occurred calculating credits: '{e}'.")
         raise Exception(e)
 
-    try:
-        hook_url = os.environ.get('WEBHOOK_URL')
-        if hook_url:
-            resp = requests.post(
-                hook_url,
-                json={
-                    "text": summary + "\n\n```\n" + buffer + "\n```",
-                }
-            )
-
-            if resp.status_code != 200:
-                print("HTTP %s: %s" % (resp.status_code, resp.text))
-        else:
-            print(summary)
-            print(buffer)
-    except Exception as e:
-        logging.critical(f"report_cost, an error occurred sending webhook: '{e}'.")
-        raise Exception(e)
+    send_notifications(buffer, summary)
 
     # for running locally to test output
     return cost_per_day_by_service
