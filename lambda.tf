@@ -3,9 +3,9 @@ resource "aws_cloudwatch_event_rule" "billing_notifier_lambda_event_rule" {
 }
 
 resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
-  rule       = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.name
-  target_id  = "check-non-compliant-report-event-rule"
-  arn        = module.billing_notifier_lambda.lambda_function.arn
+  rule      = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.name
+  target_id = "check-non-compliant-report-event-rule"
+  arn       = module.billing_notifier_lambda.lambda_function.arn
   depends_on = [
     module.billing_notifier_lambda
   ]
@@ -17,7 +17,7 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   function_name = module.billing_notifier_lambda.lambda_function.function_name
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
-  depends_on    = [
+  depends_on = [
     module.billing_notifier_lambda
   ]
 }
@@ -25,7 +25,7 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
 module "billing_notifier_lambda" {
   source  = "nozaq/lambda-auto-package/aws"
   version = "0.2.0"
-  
+
   source_dir  = "${path.module}/billing-notifier/"
   output_path = "${path.module}/packages/billing-notifier.zip"
 
@@ -35,20 +35,21 @@ module "billing_notifier_lambda" {
   }
   build_command = "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier"
 
-  iam_role_name_prefix  = var.naming_prefix
-  policy_arns           = [
-                              "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
-                              "${aws_iam_policy.cost_explorer_access_policy.arn}"
-                          ]
-  function_name         = var.naming_prefix
-  handler               = "handler.report_cost"
-  runtime               = "python3.7"
-  timeout               = 600
+  iam_role_name_prefix = var.naming_prefix
+  policy_arns = [
+    "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
+    "${aws_iam_policy.cost_explorer_access_policy.arn}"
+  ]
+  function_name = var.naming_prefix
+  handler       = "handler.report_cost"
+  runtime       = "python3.7"
+  timeout       = 600
 
   environment = {
     variables = {
-      WEBHOOK_URL       = var.webhook_url
+      WEBHOOK_URLS      = jsonencode(var.webhook_urls)
       AWS_ACCOUNT_NAME  = var.account_name
+      SNS_ARN           = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "None"
     }
   }
 }
