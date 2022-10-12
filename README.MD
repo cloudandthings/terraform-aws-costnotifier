@@ -9,18 +9,19 @@ This terraform module sends a daily cost report and the cost delta in a 7 day ro
 | Parameter | Description|
 | ----------| -----------|
 | `naming_prefix` | Naming prefix given to the lambda |
-| `slack_webhook_url` | The Slack URL of the channel where the alert should be published |
+| `webhook_url` | The Slack/Teams URL of the channel where the alert should be published |
 | `account_name` | The display name given to the account. This friendly name will display in the alert |
 | `notifcation_schedule` | CRON expression to schedule notification |
+| `emails_for_notifications` | The list of email addresses where the alerts should be published |
 
-### Example
+### Examples
 
 ```
 module "billing_notifier_root_account_slack" {
   source = "github.com/cloudandthings/terraform-aws-costnotifier"
 
   naming_prefix        = local.naming_prefix
-  slack_webhook_url    = "https://api.slack.com/messaging/webhooks"
+  webhook_url    = "https://api.slack.com/messaging/webhooks" // slack webhook
   account_name         = "cloudandthings - master"
   notifcation_schedule = "cron(0 7 ? * MON-FRI *)"
 
@@ -30,9 +31,20 @@ module "billing_notifier_root_account_teams" {
   source = "github.com/cloudandthings/terraform-aws-costnotifier"
 
   naming_prefix        = local.naming_prefix
-  slack_webhook_url    = "https://cloudandthingsio.webhook.office.com/webhookb2/xxx/IncomingWebhook/xxxxxx"
+  webhook_url    = "https://cloudandthingsio.webhook.office.com/webhookb2/xxx/IncomingWebhook/xxxxxx" // teams webhook
   account_name         = "cloudandthings - master"
   notifcation_schedule = "cron(0 20 * * ? *)"
+
+}
+
+module "billing_notifier_root_account_emails" {
+  source = "github.com/cloudandthings/terraform-aws-costnotifier"
+
+  naming_prefix        = local.naming_prefix
+  slack_webhook_url    = "https://api.slack.com/messaging/webhooks"
+  account_name         = "cloudandthings - master"
+  notifcation_schedule = "cron(0 20 * * ? *)"
+  emails_for_notifications = ["velisa@cat.io", "adan@cat.io"]  // Optional
 
 }
 ```

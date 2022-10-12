@@ -113,10 +113,6 @@ variable "tags" {
   description = "Default tags added to all resources, this will be added to the provider"
 }
 
-variable "kms_key_other" {
-  type = string
-  description = "(optional) describe your variable"
-}
 
 #  _____ _   _  ___  __________________  ___  _____ _      _____ 
 # |  __ \ | | |/ _ \ | ___ \  _  \ ___ \/ _ \|_   _| |    /  ___|
@@ -169,6 +165,13 @@ locals {
     var.environment,
     var.namespace
   ])
+
+  # Loadbalancer names must be shorter
+  naming_prefix_lb = join("", [
+    var.application_name.short
+  ])
+
+
 }
 
 
@@ -193,8 +196,7 @@ resource "aws_ssm_parameter" "outputs" {
   name        = "/${local.naming_prefix}/tf-output/${each.key}"
   description = "Give other systems a handle on this code's outputs"
 
-  type   = each.value["secure"] ? "SecureString" : "String"
-  key_id = var.kms_key_other
+  type = each.value["secure"] ? "SecureString" : "String"
 
   value = jsonencode(each.value["value"])
 
