@@ -6,7 +6,7 @@ on:
     branches:
       - main
       - master
-      - generalfixes
+      - feat/workflows
     paths:
       - '**/*.tpl'
       - '**/*.py'
