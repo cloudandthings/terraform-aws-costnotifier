@@ -1,0 +1,7 @@
+black
+boto3
+checkov
+flake8
+pre-commit
+pytest
+tftest

@@ -1,0 +1,9 @@
+{
+    "recommendations": [
+        "medo64.render-crlf",
+        "hashicorp.terraform",
+        "redhat.vscode-yaml",
+        "ms-python.python",
+        "mutantdino.resourcemonitor"
+    ]
+}

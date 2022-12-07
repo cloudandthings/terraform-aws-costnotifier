@@ -13,7 +13,8 @@ n_days = 7
 
 amber_threshold = float(os.environ.get("AMBER_THRESHOLD"))
 red_threshold = float(os.environ.get("RED_THRESHOLD"))
-# It seems that the sparkline symbols don't line up (probably based on font?) so put them last
+# It seems that the sparkline symbols don't line up (probably based on font?)
+# so put them last
 # Also, leaving out the full block because Slack doesn't like it: '█'
 sparks = ["▁", "▂", "▃", "▄", "▅", "▆", "▇"]
 
@@ -64,6 +65,7 @@ def delta(costs):
     return result
 
 
+# flake8: noqa: C901
 def report_cost(
     event, context, result: dict = None, yesterday: str = None, new_method=True
 ):
@@ -73,8 +75,10 @@ def report_cost(
     :param context: Unused
     :param result: Determine if Cost Explorer should be queried for a result or not.
     :param yesterday: Stipulate the yesterday date you would like to run against.
-    :param new_method: Stipulate if the new method of service array creation should be used.
-    :return: cost_per_day_by_service: returned for local assert validation. contains all aws costs by service.
+    :param new_method: Stipulate if the new method of service array
+        creation should be used.
+    :return: cost_per_day_by_service: returned for local assert validation.
+        Contains all aws costs by service.
     """
 
     try:
@@ -96,10 +100,11 @@ def report_cost(
             for x in range(n_days + 1)
             # Include yesterday in the list of days + 1
         ]
-        logging.debug(f"report_cost, date list for processing: '{list_of_dates}'.")
+        logging.debug("report_cost, date list for processing: " f"'{list_of_dates}'.")
     except Exception as e:
         logger.critical(
-            f"report_cost, an error occurred when determining date range. Error: '{e}'."
+            "report_cost, an error occurred when determining date range."
+            f" Error: '{e}'."
         )
         raise Exception(e)
 
@@ -170,7 +175,8 @@ def report_cost(
                     cost_per_day_by_service[key].append(cost)
         except Exception as e:
             logger.critical(
-                f"report_cost, an error occurred when building old method service array. Error: '{e}'."
+                "report_cost, an error occurred when building old method service array."
+                f" Error: '{e}'."
             )
             raise Exception(e)
     else:
@@ -195,7 +201,8 @@ def report_cost(
                     cost_per_day_by_service[key].append(cost)
         except Exception as e:
             logger.critical(
-                f"report_cost, an error occurred when building new method service array. Error: '{e}'."
+                "report_cost, an error occurred when building new method service array."
+                f" Error: '{e}'."
             )
             raise Exception(e)
     logger.info(f"report_cost, cost per day: '{cost_per_day_by_service}'.")
@@ -217,7 +224,11 @@ def report_cost(
         buffer = f"{'Service':{longest_name_len}} ${'Yday':8} {'∆%':>5} {'Last 7d':7}\n"
 
         for service_name, costs in most_expensive_yesterday[:5]:
-            buffer += f"{service_name:{longest_name_len}} ${costs[-1]:8,.2f} {delta(costs):4.0f}% {sparkline(costs):7}\n"
+            buffer += (
+                f"{service_name:{longest_name_len}}"
+                f" ${costs[-1]:8,.2f} {delta(costs):4.0f}%"
+                f" {sparkline(costs):7}\n"
+            )
 
         other_costs = [0.0] * (n_days + 1)
         # Index is +1 larger than n_days as it includes yesterday. 0 - 7
@@ -225,7 +236,11 @@ def report_cost(
             for i, cost in enumerate(costs):
                 other_costs[i] += cost
 
-        buffer += f"{'Other':{longest_name_len}} ${other_costs[-1]:8,.2f} {delta(other_costs):4.0f}% {sparkline(other_costs):7}\n"
+        buffer += (
+            f"{'Other':{longest_name_len}}"
+            f" ${other_costs[-1]:8,.2f} {delta(other_costs):4.0f}%"
+            f" {sparkline(other_costs):7}\n"
+        )
 
         total_costs = [0.0] * (n_days + 1)
         for day_number in range(n_days + 1):
@@ -235,7 +250,11 @@ def report_cost(
                 except IndexError:
                     total_costs[day_number] += 0.0
 
-        buffer += f"{'Total':{longest_name_len}} ${total_costs[-1]:8,.2f} {delta(total_costs):4.0f}% {sparkline(total_costs):7}\n"
+        buffer += (
+            f"{'Total':{longest_name_len}}"
+            f" ${total_costs[-1]:8,.2f} {delta(total_costs):4.0f}%"
+            f" {sparkline(total_costs):7}\n"
+        )
 
         cost_per_day_by_service["total"] = total_costs[-1]
 
@@ -249,12 +268,15 @@ def report_cost(
             notify = "<!channel>\n"
 
         summary = (
-            f"{emoji} {yesterday.strftime('%Y-%m-%d')} cost for account {account_name} was ${total_costs[-1]:,.2f} "
-            f"{emoji} \n {notify}"
+            f"{emoji} {yesterday.strftime('%Y-%m-%d')}"
+            f" cost for account {account_name}"
+            f" was ${total_costs[-1]:,.2f}"
+            f" {emoji} \n {notify}"
         )
     except Exception as e:
         logger.critical(
-            f"report_cost, an error occurred when building the notification message. Error: '{e}'."
+            "report_cost, an error occurred when building the notification message."
+            f" Error: '{e}'."
         )
         raise Exception(e)
 
