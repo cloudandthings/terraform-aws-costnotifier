@@ -11,6 +11,8 @@ resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
   ]
 }
 
+data "aws_caller_identity" "current" {}
+
 resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
@@ -20,8 +22,21 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   depends_on = [
     module.billing_notifier_lambda
   ]
+  source_account = data.aws_caller_identity.current.account_id
 }
 
+locals {
+  vpc_config = (
+    length(var.security_group_ids) + length(var.subnet_ids) == 0
+    ? null
+    : {
+      security_group_ids = var.security_group_ids
+      subnet_ids         = var.subnet_ids
+    }
+  )
+}
+
+#tfsec:ignore:aws-lambda-enable-tracing
 module "billing_notifier_lambda" {
   source  = "nozaq/lambda-auto-package/aws"
   version = "0.2.0"
@@ -54,4 +69,7 @@ module "billing_notifier_lambda" {
       RED_THRESHOLD    = var.red_threshold
     }
   }
+
+  vpc_config = local.vpc_config
+
 }

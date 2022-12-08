@@ -73,6 +73,8 @@ Select an example from the dropdown menu above.
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | (required) Naming prefix used to name all resources | `string` | n/a | yes |
 | <a name="input_notification_schedule"></a> [notification\_schedule](#input\_notification\_schedule) | (optional) CRON expression to schedule notification | `string` | `"cron(0 20 ? * MON-SUN *)"` | no |
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
+| <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | (optional) List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
+| <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | (optional) List of VPC subnet IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_webhook_urls"></a> [webhook\_urls](#input\_webhook\_urls) | (required) Webhook URLs to receive daily cost notifications on either Slack or Teams | `list(string)` | n/a | yes |
 
 ----
@@ -116,6 +118,7 @@ Select an example from the dropdown menu above.
 | [aws_lambda_permission.billing_notifier_lambda_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
 | [aws_sns_topic.cost_notifier](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_sns_topic_subscription.cost_notifier](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 
 ----
 <!-- END_TF_DOCS -->

@@ -44,13 +44,24 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
       - name: Install binaries
         run: |
-          mkdir -p .binaries && cp .github/artefacts/* .binaries && cd .binaries
+          mkdir -p .binaries && cd .binaries
+
+          # terraform-docs
           curl -sSLo ./terraform-docs-v0.16.0-linux-amd64.tar.gz https://terraform-docs.io/dl/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd64.tar.gz
-          sha256sum --check terraform-docs-v0.16.0.sha256sum
           tar -xzf terraform-docs-v0.16.0-linux-amd64.tar.gz
           chmod +x terraform-docs
           mv terraform-docs /usr/local/bin/terraform-docs
+
+          # tfsec
+          curl -sSLo ./tfsec_1.28.0_linux_amd64.tar.gz https://github.com/aquasecurity/tfsec/releases/download/v1.28.0/tfsec_1.28.0_linux_amd64.tar.gz
+          mv tfsec_1.28.0_linux_amd64.tar.gz tfsec.tar.gz
+          tar -xzf tfsec.tar.gz
+          chmod +x tfsec
+          mv tfsec /usr/local/bin/tfsec
+
+          # tflint
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
           cd ..
       - name: Install requirements
         run: |
@@ -80,13 +91,15 @@ jobs:
           role-duration-seconds: 3600
       - name: Install binaries
         run: |
-          mkdir -p .binaries && cp .github/artefacts/* .binaries && cd .binaries
+          mkdir -p .binaries && cd .binaries
+
+          # terraform (min supported version)
           curl -sSLo ./terraform_${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}_linux_amd64.zip https://releases.hashicorp.com/terraform/${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}/terraform_${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}_linux_amd64.zip
-          sha256sum --check terraform_${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}.sha256sum
           unzip terraform_${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}_linux_amd64.zip
           mv terraform terraform-${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}
           chmod +x terraform-${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}
           mv terraform-${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }} /usr/local/bin/terraform-${{ env.TERRAFORM_MIN_SUPPORTED_VERSION }}
+
           cd ..
       - name: Install requirements
         run: |
