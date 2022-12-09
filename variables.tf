@@ -36,3 +36,15 @@ variable "red_threshold" {
   description = "Percentage exceeded threshold to send a red alert and notify the slack channel"
   default     = "50"
 }
+
+variable "security_group_ids" {
+  description = "(optional) List of VPC security group IDs associated with the Lambda function."
+  type        = list(string)
+  default     = []
+}
+
+variable "subnet_ids" {
+  description = "(optional) List of VPC subnet IDs associated with the Lambda function."
+  type        = list(string)
+  default     = []
+}
