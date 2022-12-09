@@ -4,6 +4,7 @@
         "hashicorp.terraform",
         "redhat.vscode-yaml",
         "ms-python.python",
-        "mutantdino.resourcemonitor"
+        "mutantdino.resourcemonitor",
+        "hashicorp.hcl"
     ]
 }

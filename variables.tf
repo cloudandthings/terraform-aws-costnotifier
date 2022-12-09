@@ -1,21 +1,21 @@
 variable "naming_prefix" {
   type        = string
-  description = "(required) Naming prefix used to name all resources"
+  description = "Naming prefix used to name all resources"
 }
 
 variable "webhook_urls" {
   type        = list(string)
-  description = "(required) Webhook URLs to receive daily cost notifications on either Slack or Teams"
+  description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
 }
 
 variable "account_name" {
   type        = string
-  description = "(required) Name of your account to Identify your account in the notification message"
+  description = "Name of your account to Identify your account in the notification message"
 }
 
 variable "notification_schedule" {
   type        = string
-  description = "(optional) CRON expression to schedule notification"
+  description = "CRON expression to schedule notification"
   default     = "cron(0 20 ? * MON-SUN *)"
 }
 
@@ -38,13 +38,19 @@ variable "red_threshold" {
 }
 
 variable "security_group_ids" {
-  description = "(optional) List of VPC security group IDs associated with the Lambda function."
+  description = "List of VPC security group IDs associated with the Lambda function."
   type        = list(string)
   default     = []
 }
 
 variable "subnet_ids" {
-  description = "(optional) List of VPC subnet IDs associated with the Lambda function."
+  description = "List of VPC subnet IDs associated with the Lambda function."
   type        = list(string)
   default     = []
+}
+
+variable "sns_topic_kms_key_arn" {
+  description = "KMS key ARN to use for encrypting SNS topic"
+  type        = string
+  default     = "alias/aws/sns"
 }
