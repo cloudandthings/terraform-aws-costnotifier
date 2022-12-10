@@ -75,6 +75,7 @@ Select an example from the dropdown menu above.
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | (optional) List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | (optional) List of VPC subnet IDs associated with the Lambda function. | `list(string)` | `[]` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | (optional) A mapping of tags to assign to the resources. | `map(string)` | `{}` | no |
 | <a name="input_webhook_urls"></a> [webhook\_urls](#input\_webhook\_urls) | (required) Webhook URLs to receive daily cost notifications on either Slack or Teams | `list(string)` | n/a | yes |
 
 ----

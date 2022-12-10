@@ -1,11 +1,16 @@
 resource "aws_cloudwatch_event_rule" "billing_notifier_lambda_event_rule" {
   schedule_expression = var.notification_schedule
+
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
   rule      = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.name
   target_id = "check-non-compliant-report-event-rule"
   arn       = module.billing_notifier_lambda.lambda_function.arn
+
+  tags = var.tags
+
   depends_on = [
     module.billing_notifier_lambda
   ]
@@ -14,15 +19,18 @@ resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
-  function_name = module.billing_notifier_lambda.lambda_function.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+  statement_id   = "AllowExecutionFromCloudWatch"
+  action         = "lambda:InvokeFunction"
+  function_name  = module.billing_notifier_lambda.lambda_function.function_name
+  principal      = "events.amazonaws.com"
+  source_arn     = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+  source_account = data.aws_caller_identity.current.account_id
+
+  tags = var.tags
+
   depends_on = [
     module.billing_notifier_lambda
   ]
-  source_account = data.aws_caller_identity.current.account_id
 }
 
 locals {
@@ -72,4 +80,5 @@ module "billing_notifier_lambda" {
 
   vpc_config = local.vpc_config
 
+  tags = var.tags
 }
