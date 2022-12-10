@@ -50,7 +50,7 @@ variable "subnet_ids" {
 }
 
 variable "encryption_key_id" {
-  description = "(optional) The ARN of the KMS key used to encrypt all resources. If not specified, the default AWS KMS key is used."
+  description = "(optional) The alias, alias ARN, key ID, or key ARN of the KMS key used to encrypt all resources. If not specified, the default AWS KMS key is used."
   type        = string
   default     = null
 }
