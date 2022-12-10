@@ -48,3 +48,9 @@ variable "subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "encryption_key_id" {
+  description = "(optional) The ARN of the KMS key used to encrypt all resources. If not specified, the default AWS KMS key is used."
+  type        = string
+  default     = null
+}

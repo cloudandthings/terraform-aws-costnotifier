@@ -70,6 +70,7 @@ Select an example from the dropdown menu above.
 | <a name="input_account_name"></a> [account\_name](#input\_account\_name) | (required) Name of your account to Identify your account in the notification message | `string` | n/a | yes |
 | <a name="input_amber_threshold"></a> [amber\_threshold](#input\_amber\_threshold) | Percentage exceeded threshold to send an amber alert and notify the slack channel | `string` | `"20"` | no |
 | <a name="input_emails_for_notifications"></a> [emails\_for\_notifications](#input\_emails\_for\_notifications) | List of emails to receive cost notifier notifications | `list(string)` | `[]` | no |
+| <a name="input_encryption_key_id"></a> [encryption\_key\_id](#input\_encryption\_key\_id) | (optional) The ARN of the KMS key used to encrypt all resources. If not specified, the default AWS KMS key is used. | `string` | `null` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | (required) Naming prefix used to name all resources | `string` | n/a | yes |
 | <a name="input_notification_schedule"></a> [notification\_schedule](#input\_notification\_schedule) | (optional) CRON expression to schedule notification | `string` | `"cron(0 20 ? * MON-SUN *)"` | no |
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |

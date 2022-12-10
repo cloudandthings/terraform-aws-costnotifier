@@ -71,5 +71,5 @@ module "billing_notifier_lambda" {
   }
 
   vpc_config = local.vpc_config
-
+  kms_key_id = local.lambda_encryption_key_id
 }
