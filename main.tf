@@ -93,6 +93,4 @@ module "billing_notifier_lambda" {
   ####################################
   # Network
   vpc_config = local.vpc_config
-
-  tags = var.tags
 }
