@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v1.1.0...v1.2.0) (2022-12-12)
+
+
+### Features
+
+* **security:** Add sns_topic_kms_key_arn variable ([ca29133](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/ca2913384d968ad0002804c5fb3d90b51f31ac14))
+
+
+### Bug Fixes
+
+* **iam:** Policy syntax bugfix ([c724935](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/c724935de51d832ba705a8a6d4286f56f269c130))
+
 ## [1.1.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v1.0.0...v1.1.0) (2022-12-09)
 
 
