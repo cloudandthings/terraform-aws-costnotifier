@@ -45,6 +45,7 @@ module "billing_notifier_lambda" {
   ####################################
   # General
   function_name = var.naming_prefix
+  description   = var.lambda_description
 
   handler = "handler.report_cost"
   runtime = "python3.7"

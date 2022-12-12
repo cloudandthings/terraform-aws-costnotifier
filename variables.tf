@@ -1,6 +1,16 @@
+#---------------------------------------------------------------------------------------------------
+# General
+#---------------------------------------------------------------------------------------------------
+
 variable "naming_prefix" {
   type        = string
   description = "Naming prefix used to name all resources"
+}
+
+variable "lambda_description" {
+  description = "Lambda function description."
+  type        = string
+  default     = "This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"
 }
 
 #---------------------------------------------------------------------------------------------------
