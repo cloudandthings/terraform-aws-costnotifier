@@ -34,6 +34,7 @@ locals {
       subnet_ids         = var.subnet_ids
     }
   )
+
 }
 
 #tfsec:ignore:aws-lambda-enable-tracing
@@ -62,6 +63,15 @@ module "billing_notifier_lambda" {
     requirements = base64sha256(file("${path.module}/billing-notifier/requirements.txt"))
     execute      = base64sha256(file("${path.module}/billing-notifier/pip.sh"))
   }
+
+  ####################################
+  # KMS
+
+  # The ARN of the KMS Key to use when encrypting log data.
+  kms_key_id = var.kms_key_arn
+  # The ARN of the KMS Key to use when encrypting environment variables.
+  # Ignored unless `environment` is specified.
+  lambda_kms_key_arn = var.kms_key_arn
 
   ####################################
   # IAM

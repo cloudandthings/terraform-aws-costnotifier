@@ -22,13 +22,13 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | <a name="input_account_name"></a> [account\_name](#input\_account\_name) | Name of your account to Identify your account in the notification message | `string` | n/a | yes |
 | <a name="input_amber_threshold"></a> [amber\_threshold](#input\_amber\_threshold) | Percentage exceeded threshold to send an amber alert and notify the slack channel | `string` | `"20"` | no |
 | <a name="input_emails_for_notifications"></a> [emails\_for\_notifications](#input\_emails\_for\_notifications) | List of emails to receive cost notifier notifications | `list(string)` | `[]` | no |
+| <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources. | `string` | `null` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Lambda function description. | `string` | `"This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix used to name all resources | `string` | n/a | yes |
 | <a name="input_notification_schedule"></a> [notification\_schedule](#input\_notification\_schedule) | CRON expression to schedule notification | `string` | `"cron(0 20 ? * MON-SUN *)"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | ARN of the policy that is used to set the permissions boundary for the role. | `string` | `null` | no |
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
-| <a name="input_sns_topic_kms_key_arn"></a> [sns\_topic\_kms\_key\_arn](#input\_sns\_topic\_kms\_key\_arn) | KMS key ARN to use for encrypting SNS topic | `string` | `"alias/aws/sns"` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC subnet IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_webhook_urls"></a> [webhook\_urls](#input\_webhook\_urls) | Webhook URLs to receive daily cost notifications on either Slack or Teams | `list(string)` | n/a | yes |
 

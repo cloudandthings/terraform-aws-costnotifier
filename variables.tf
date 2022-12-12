@@ -85,8 +85,8 @@ variable "subnet_ids" {
 # KMS
 #---------------------------------------------------------------------------------------------------
 
-variable "sns_topic_kms_key_arn" {
-  description = "KMS key ARN to use for encrypting SNS topic"
+variable "kms_key_arn" {
+  description = "The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources."
   type        = string
-  default     = "alias/aws/sns"
+  default     = null
 }
