@@ -26,8 +26,6 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   source_arn     = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
   source_account = data.aws_caller_identity.current.account_id
 
-  tags = var.tags
-
   depends_on = [
     module.billing_notifier_lambda
   ]
@@ -93,4 +91,6 @@ module "billing_notifier_lambda" {
   ####################################
   # Network
   vpc_config = local.vpc_config
+  
+  tags = var.tags
 }
