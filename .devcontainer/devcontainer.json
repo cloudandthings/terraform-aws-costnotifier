@@ -48,7 +48,8 @@
 		"redhat.vscode-yaml",
 		"ms-python.python",
 		"mutantdino.resourcemonitor",
-		"medo64.render-crlf"
+		"medo64.render-crlf",
+		"hashicorp.hcl"
 	],
 
 	// Hack for terraform-ls
