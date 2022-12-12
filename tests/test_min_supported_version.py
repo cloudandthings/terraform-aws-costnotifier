@@ -13,7 +13,7 @@ from tests.conftest import terraform_plan
 
 @pytest.fixture(scope="module")
 def plan(terraform_config):
-    yield from terraform_plan("examples/basic", terraform_config)
+    yield from terraform_plan("examples/email", terraform_config)
 
 
 @pytest.mark.terraform_min_supported_version

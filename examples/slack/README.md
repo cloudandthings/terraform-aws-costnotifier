@@ -2,7 +2,18 @@
 ----
 ## main.tf
 ```hcl
-# TODO
+module "example" {
+
+  # Update source and version as needed.
+  source = "../../"
+
+  naming_prefix = "costnotifier-example-slack"
+  account_name  = "cloudandthings - master"
+
+  webhook_urls          = ["https://api.slack.com/messaging/webhooks"] # slack webhook
+  notification_schedule = "cron(0 7 ? * MON-FRI *)"
+
+}
 ```
 ----
 
@@ -19,7 +30,9 @@
 ----
 ### Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_example"></a> [example](#module\_example) | ../../ | n/a |
 
 ----
 ### Outputs
@@ -36,8 +49,8 @@ No providers.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.49.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.9 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | 3.2.1 |
 
 ----

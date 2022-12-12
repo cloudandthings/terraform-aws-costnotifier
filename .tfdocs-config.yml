@@ -17,7 +17,7 @@ sections:
 content: |-
   ### Examples
 
-  Select an example from the dropdown menu above.
+  See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 
   ----
   ## Documentation
