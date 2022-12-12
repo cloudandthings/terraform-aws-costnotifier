@@ -72,7 +72,8 @@ jobs:
         run: |
           source .venv/bin/activate
           pre-commit install
-          pre-commit install --hook-type commit-msg
+          ls .git/
+          conventional-pre-commit .git/COMMIT_MSG
           pre-commit run --all-files --show-diff-on-failure
 
   tests:
