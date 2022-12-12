@@ -18,7 +18,7 @@ repos:
     rev: v2.1.1
     hooks:
       - id: conventional-pre-commit
-        stages: [commit-msg]
+        # stages: [commit-msg]
 # TERRAFORM
   # If running tf-docs it must be run first to avoid race condition relating to version constraints.
   # BUG: terraform_docs hook conflicts when used more than once.
