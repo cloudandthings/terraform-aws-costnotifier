@@ -31,7 +31,7 @@ python3 -m venv .venv
 Activate / enter your virtual environment whenever you wish to test.
 
 ```sh
-##  Examples to activate Python virtual environment
+##  Examples to activate Python virtual environment.
 # Linux / Mac
 source .venv/bin/activate
 # Windows
