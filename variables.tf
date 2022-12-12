@@ -3,10 +3,9 @@ variable "naming_prefix" {
   description = "Naming prefix used to name all resources"
 }
 
-variable "webhook_urls" {
-  type        = list(string)
-  description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
-}
+#---------------------------------------------------------------------------------------------------
+# Notifications
+#---------------------------------------------------------------------------------------------------
 
 variable "account_name" {
   type        = string
@@ -19,11 +18,20 @@ variable "notification_schedule" {
   default     = "cron(0 20 ? * MON-SUN *)"
 }
 
+variable "webhook_urls" {
+  type        = list(string)
+  description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
+}
+
 variable "emails_for_notifications" {
   type        = list(string)
   description = "List of emails to receive cost notifier notifications"
   default     = []
 }
+
+#---------------------------------------------------------------------------------------------------
+# Thresholds
+#---------------------------------------------------------------------------------------------------
 
 variable "amber_threshold" {
   type        = string
@@ -37,6 +45,20 @@ variable "red_threshold" {
   default     = "50"
 }
 
+#---------------------------------------------------------------------------------------------------
+# IAM
+#---------------------------------------------------------------------------------------------------
+
+variable "permissions_boundary" {
+  description = "ARN of the policy that is used to set the permissions boundary for the role."
+  type        = string
+  default     = null
+}
+
+#---------------------------------------------------------------------------------------------------
+# Network
+#---------------------------------------------------------------------------------------------------
+
 variable "security_group_ids" {
   description = "List of VPC security group IDs associated with the Lambda function."
   type        = list(string)
@@ -48,6 +70,10 @@ variable "subnet_ids" {
   type        = list(string)
   default     = []
 }
+
+#---------------------------------------------------------------------------------------------------
+# KMS
+#---------------------------------------------------------------------------------------------------
 
 variable "sns_topic_kms_key_arn" {
   description = "KMS key ARN to use for encrypting SNS topic"

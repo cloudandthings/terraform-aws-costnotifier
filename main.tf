@@ -65,10 +65,13 @@ module "billing_notifier_lambda" {
   ####################################
   # IAM
   iam_role_name_prefix = var.naming_prefix
+
   policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
     aws_iam_policy.cost_explorer_access_policy.arn
   ]
+
+  permissions_boundary = var.permissions_boundary
 
   ####################################
   # Environment
