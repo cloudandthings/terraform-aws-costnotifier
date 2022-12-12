@@ -50,7 +50,7 @@ module "billing_notifier_lambda" {
   handler = "handler.report_cost"
   runtime = "python3.7"
 
-  timeout = 600
+  timeout = 300
 
   ####################################
   # Build
