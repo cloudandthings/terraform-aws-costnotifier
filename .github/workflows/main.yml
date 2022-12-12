@@ -5,7 +5,7 @@ on: [workflow_dispatch, pull_request]
 env:
   AWS_REGION: af-south-1
   AWS_ROLE: cat-genrl-prd-infra-gh-tf-aws-github-runners
-  TERRAFORM_MIN_SUPPORTED_VERSION: 0.13.1
+  TERRAFORM_MIN_SUPPORTED_VERSION: 0.15.0
 
 permissions:
   id-token: write

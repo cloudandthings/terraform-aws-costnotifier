@@ -62,8 +62,8 @@ To run tests using this profile:
 # Regular tests run with the usual Terraform binary
 pytest -m 'not terraform_min_supported_version' --profile <your_profile>
 
-# Tests marked for a minimum Terraform version, eg v0.13.1
-pytest -m 'terraform_min_supported_version' --profile <your_profile> --terraform-binary=terraform_v0.13.1.exe
+# Tests marked for a minimum Terraform version, eg v0.15.0
+pytest -m 'terraform_min_supported_version' --profile <your_profile> --terraform-binary=terraform_v0.15.0.exe
 ```
 
 ## Known issues

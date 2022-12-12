@@ -38,28 +38,40 @@ locals {
 
 #tfsec:ignore:aws-lambda-enable-tracing
 module "billing_notifier_lambda" {
-  source  = "nozaq/lambda-auto-package/aws"
-  version = "0.2.0"
 
+  source  = "nozaq/lambda-auto-package/aws"
+  version = "0.4.0"
+
+  ####################################
+  # General
+  function_name = var.naming_prefix
+
+  handler = "handler.report_cost"
+  runtime = "python3.7"
+
+  timeout = 600
+
+  ####################################
+  # Build
   source_dir  = "${path.module}/billing-notifier/"
   output_path = "${path.module}/packages/billing-notifier.zip"
 
+  build_command = "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier"
   build_triggers = {
     requirements = base64sha256(file("${path.module}/billing-notifier/requirements.txt"))
     execute      = base64sha256(file("${path.module}/billing-notifier/pip.sh"))
   }
-  build_command = "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier"
 
+  ####################################
+  # IAM
   iam_role_name_prefix = var.naming_prefix
   policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
     aws_iam_policy.cost_explorer_access_policy.arn
   ]
-  function_name = var.naming_prefix
-  handler       = "handler.report_cost"
-  runtime       = "python3.7"
-  timeout       = 600
 
+  ####################################
+  # Environment
   environment = {
     variables = {
       WEBHOOK_URLS     = jsonencode(var.webhook_urls)
@@ -70,6 +82,7 @@ module "billing_notifier_lambda" {
     }
   }
 
+  ####################################
+  # Network
   vpc_config = local.vpc_config
-  kms_key_id = local.lambda_encryption_key_id
 }
