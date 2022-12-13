@@ -30,6 +30,7 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC subnet IDs associated with the Lambda function. | `list(string)` | `[]` | no |
+| <a name="input_webhook_type"></a> [webhook\_type](#input\_webhook\_type) | Either "slack" or "teams". | `string` | `"slack"` | no |
 | <a name="input_webhook_urls"></a> [webhook\_urls](#input\_webhook\_urls) | Webhook URLs to receive daily cost notifications on either Slack or Teams | `list(string)` | n/a | yes |
 
 ----

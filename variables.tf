@@ -33,6 +33,16 @@ variable "webhook_urls" {
   description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
 }
 
+variable "webhook_type" {
+  description = "Either \"slack\" or \"teams\"."
+  type        = string
+  default     = "slack"
+  validation {
+    condition     = contains(["slack", "teams"], lower(var.webhook_type))
+    error_message = "Must be one of: \"slack\", \"teams\"."
+  }
+}
+
 variable "emails_for_notifications" {
   type        = list(string)
   description = "List of emails to receive cost notifier notifications"

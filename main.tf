@@ -89,8 +89,9 @@ module "billing_notifier_lambda" {
   environment = {
     variables = {
       WEBHOOK_URLS     = jsonencode(var.webhook_urls)
+      WEBHOOK_TYPE     = lower(var.webhook_type)
       AWS_ACCOUNT_NAME = var.account_name
-      SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "None"
+      SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "DISABLED"
       AMBER_THRESHOLD  = var.amber_threshold
       RED_THRESHOLD    = var.red_threshold
     }
