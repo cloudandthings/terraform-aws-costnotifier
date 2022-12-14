@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v1.2.0...v2.0.0) (2022-12-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **security:** Rename sns_topic_kms_key_arn variable to kms_key_id and use for all resources
+
+### Features
+
+* Add tags to all resources ([d86018e](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/d86018ee08326c7dd4476a7e34ebbce962c3e8ae))
+* **iam:** Add permissions_boundary variable ([dc0bf06](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/dc0bf0649fb10e38bdde7c6b64dba51e6cf0ed5d))
+* **lambda:** Add lambda_description variable ([b040993](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/b04099344223c33b47eda93ad8a97d3090be1a33))
+* **notifications:** Add var.webhook_type and improved teams notification ([0ef757b](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/0ef757b177af520adcf6e9260dee9b17e48d84cb))
+* **security:** Rename sns_topic_kms_key_arn variable to kms_key_id and use for all resources ([996b40f](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/996b40f191fc24caeec6e184d82fe41d0a83fc82))
+
+
+### Bug Fixes
+
+* **lambda:** Change timeout to 300sec ([25c45ec](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/25c45ecec91b420bb0a99b6f5865080e516b49ed))
+
 ## [1.2.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v1.1.0...v1.2.0) (2022-12-12)
 
 
