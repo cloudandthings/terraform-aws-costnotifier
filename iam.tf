@@ -21,4 +21,6 @@ resource "aws_iam_policy" "cost_explorer_access_policy" {
       }]
     )
   })
+
+  tags = var.tags
 }

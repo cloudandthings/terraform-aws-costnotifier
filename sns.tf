@@ -8,6 +8,8 @@ resource "aws_sns_topic" "cost_notifier" {
   name  = "${var.naming_prefix}-costnotifier"
 
   kms_master_key_id = coalesce(var.kms_key_arn, "alias/aws/sns")
+
+  tags = var.tags
 }
 
 resource "aws_sns_topic_subscription" "cost_notifier" {

@@ -13,6 +13,12 @@ variable "lambda_description" {
   default     = "This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"
 }
 
+variable "tags" {
+  description = "A mapping of tags to assign to the resources."
+  type        = map(string)
+  default     = {}
+}
+
 #---------------------------------------------------------------------------------------------------
 # Notifications
 #---------------------------------------------------------------------------------------------------

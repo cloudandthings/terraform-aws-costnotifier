@@ -14,15 +14,18 @@ resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
   function_name = module.billing_notifier_lambda.lambda_function.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+
+  statement_id = "AllowExecutionFromCloudWatch"
+  action       = "lambda:InvokeFunction"
+  principal    = "events.amazonaws.com"
+
+  source_arn     = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+  source_account = data.aws_caller_identity.current.account_id
+
   depends_on = [
     module.billing_notifier_lambda
   ]
-  source_account = data.aws_caller_identity.current.account_id
 }
 
 locals {
@@ -52,6 +55,7 @@ module "billing_notifier_lambda" {
   runtime = "python3.7"
 
   timeout = 300
+  tags    = var.tags
 
   ####################################
   # Build
