@@ -14,15 +14,18 @@ resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
   function_name = module.billing_notifier_lambda.lambda_function.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+
+  statement_id = "AllowExecutionFromCloudWatch"
+  action       = "lambda:InvokeFunction"
+  principal    = "events.amazonaws.com"
+
+  source_arn     = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.arn
+  source_account = data.aws_caller_identity.current.account_id
+
   depends_on = [
     module.billing_notifier_lambda
   ]
-  source_account = data.aws_caller_identity.current.account_id
 }
 
 locals {
@@ -34,6 +37,7 @@ locals {
       subnet_ids         = var.subnet_ids
     }
   )
+
 }
 
 #tfsec:ignore:aws-lambda-enable-tracing
@@ -45,11 +49,13 @@ module "billing_notifier_lambda" {
   ####################################
   # General
   function_name = var.naming_prefix
+  description   = var.lambda_description
 
   handler = "handler.report_cost"
   runtime = "python3.7"
 
-  timeout = 600
+  timeout = 300
+  tags    = var.tags
 
   ####################################
   # Build
@@ -63,20 +69,33 @@ module "billing_notifier_lambda" {
   }
 
   ####################################
+  # KMS
+
+  # The ARN of the KMS Key to use when encrypting log data.
+  kms_key_id = var.kms_key_arn
+  # The ARN of the KMS Key to use when encrypting environment variables.
+  # Ignored unless `environment` is specified.
+  lambda_kms_key_arn = var.kms_key_arn
+
+  ####################################
   # IAM
   iam_role_name_prefix = var.naming_prefix
+
   policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
     aws_iam_policy.cost_explorer_access_policy.arn
   ]
+
+  permissions_boundary = var.permissions_boundary
 
   ####################################
   # Environment
   environment = {
     variables = {
       WEBHOOK_URLS     = jsonencode(var.webhook_urls)
+      WEBHOOK_TYPE     = lower(var.webhook_type)
       AWS_ACCOUNT_NAME = var.account_name
-      SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "None"
+      SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "DISABLED"
       AMBER_THRESHOLD  = var.amber_threshold
       RED_THRESHOLD    = var.red_threshold
     }

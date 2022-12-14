@@ -1,12 +1,27 @@
+#---------------------------------------------------------------------------------------------------
+# General
+#---------------------------------------------------------------------------------------------------
+
 variable "naming_prefix" {
   type        = string
   description = "Naming prefix used to name all resources"
 }
 
-variable "webhook_urls" {
-  type        = list(string)
-  description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
+variable "lambda_description" {
+  description = "Lambda function description."
+  type        = string
+  default     = "This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"
 }
+
+variable "tags" {
+  description = "A mapping of tags to assign to the resources."
+  type        = map(string)
+  default     = {}
+}
+
+#---------------------------------------------------------------------------------------------------
+# Notifications
+#---------------------------------------------------------------------------------------------------
 
 variable "account_name" {
   type        = string
@@ -19,11 +34,30 @@ variable "notification_schedule" {
   default     = "cron(0 20 ? * MON-SUN *)"
 }
 
+variable "webhook_urls" {
+  type        = list(string)
+  description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
+}
+
+variable "webhook_type" {
+  description = "Either \"slack\" or \"teams\"."
+  type        = string
+  default     = "slack"
+  validation {
+    condition     = contains(["slack", "teams"], lower(var.webhook_type))
+    error_message = "Must be one of: \"slack\", \"teams\"."
+  }
+}
+
 variable "emails_for_notifications" {
   type        = list(string)
   description = "List of emails to receive cost notifier notifications"
   default     = []
 }
+
+#---------------------------------------------------------------------------------------------------
+# Thresholds
+#---------------------------------------------------------------------------------------------------
 
 variable "amber_threshold" {
   type        = string
@@ -37,6 +71,20 @@ variable "red_threshold" {
   default     = "50"
 }
 
+#---------------------------------------------------------------------------------------------------
+# IAM
+#---------------------------------------------------------------------------------------------------
+
+variable "permissions_boundary" {
+  description = "ARN of the policy that is used to set the permissions boundary for the role."
+  type        = string
+  default     = null
+}
+
+#---------------------------------------------------------------------------------------------------
+# Network
+#---------------------------------------------------------------------------------------------------
+
 variable "security_group_ids" {
   description = "List of VPC security group IDs associated with the Lambda function."
   type        = list(string)
@@ -49,8 +97,12 @@ variable "subnet_ids" {
   default     = []
 }
 
-variable "sns_topic_kms_key_arn" {
-  description = "KMS key ARN to use for encrypting SNS topic"
+#---------------------------------------------------------------------------------------------------
+# KMS
+#---------------------------------------------------------------------------------------------------
+
+variable "kms_key_arn" {
+  description = "The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources."
   type        = string
-  default     = "alias/aws/sns"
+  default     = null
 }
