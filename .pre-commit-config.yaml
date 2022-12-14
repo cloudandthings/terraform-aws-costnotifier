@@ -11,6 +11,8 @@
 # INSTALL hooks for this workspace
 # pre-commit install
 
+exclude: '^modules/external/.*$'
+
 repos:
 # TERRAFORM
   # If running tf-docs it must be run first to avoid race condition relating to version constraints.

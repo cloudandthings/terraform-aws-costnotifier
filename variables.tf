@@ -106,3 +106,13 @@ variable "kms_key_arn" {
   type        = string
   default     = null
 }
+
+#---------------------------------------------------------------------------------------------------
+# Build
+#---------------------------------------------------------------------------------------------------
+
+variable "enable_remote_build" {
+  description = "Whether to enable remote building for the lambda function package ardhive, otherwise a local copy of the archive is used."
+  type        = bool
+  default     = false
+}
