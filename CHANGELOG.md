@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.0.0...v2.1.0) (2022-12-14)
+
+
+### Features
+
+* Disable remote building ([#33](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/33)) ([d98bf60](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/d98bf60b36e3ae15b51f45d8cce23c6592c74c13))
+
 ## [2.0.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v1.2.0...v2.0.0) (2022-12-14)
 
 
