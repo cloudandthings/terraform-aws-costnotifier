@@ -22,6 +22,7 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | <a name="input_account_name"></a> [account\_name](#input\_account\_name) | Name of your account to Identify your account in the notification message | `string` | n/a | yes |
 | <a name="input_amber_threshold"></a> [amber\_threshold](#input\_amber\_threshold) | Percentage exceeded threshold to send an amber alert and notify the slack channel | `string` | `"20"` | no |
 | <a name="input_emails_for_notifications"></a> [emails\_for\_notifications](#input\_emails\_for\_notifications) | List of emails to receive cost notifier notifications | `list(string)` | `[]` | no |
+| <a name="input_enable_remote_build"></a> [enable\_remote\_build](#input\_enable\_remote\_build) | Whether to enable remote building for the lambda function package ardhive, otherwise a local copy of the archive is used. | `bool` | `false` | no |
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources. | `string` | `null` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Lambda function description. | `string` | `"This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix used to name all resources | `string` | n/a | yes |
@@ -39,7 +40,7 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_billing_notifier_lambda"></a> [billing\_notifier\_lambda](#module\_billing\_notifier\_lambda) | nozaq/lambda-auto-package/aws | 0.4.0 |
+| <a name="module_billing_notifier_lambda"></a> [billing\_notifier\_lambda](#module\_billing\_notifier\_lambda) | ./modules/external/nozaq/lambda-auto-package | n/a |
 
 ----
 ### Outputs
@@ -53,7 +54,7 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.9 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.9 |
 
 ----
 ### Requirements
@@ -61,8 +62,8 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.9 |
-| <a name="requirement_null"></a> [null](#requirement\_null) | 3.2.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.9 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | ~> 3.1 |
 
 ----
 ### Resources

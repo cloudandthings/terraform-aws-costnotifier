@@ -74,9 +74,25 @@ jobs:
           pre-commit install
           pre-commit run --all-files --show-diff-on-failure
 
-  tests:
+  package-tests:
+    needs: [python_lint, pre_commit]
+    name: ✅ package-tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run
+        run: |
+          cd billing-notifier
+          mv package.zip the_package.zip
+          /bin/bash ./package.sh
+          diff the_package.zip package.zip || {
+            echo "Package file requires an update. Please run package.sh locally."
+            exit $?
+          }
+
+  terraform-tests:
     needs: [python_lint, terraform_lint, pre_commit]
-    name: ✅ tests
+    name: ✅ terraform-tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

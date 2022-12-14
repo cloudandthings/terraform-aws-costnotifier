@@ -43,8 +43,11 @@ locals {
 #tfsec:ignore:aws-lambda-enable-tracing
 module "billing_notifier_lambda" {
 
-  source  = "nozaq/lambda-auto-package/aws"
-  version = "0.4.0"
+  # Temporary until this is merged:
+  # https://github.com/nozaq/terraform-aws-lambda-auto-package/pull/30
+  source = "./modules/external/nozaq/lambda-auto-package"
+  # source  = "nozaq/lambda-auto-package/aws"
+  # version = "0.4.0"
 
   ####################################
   # General
@@ -59,10 +62,13 @@ module "billing_notifier_lambda" {
 
   ####################################
   # Build
-  source_dir  = "${path.module}/billing-notifier/"
-  output_path = "${path.module}/packages/billing-notifier.zip"
 
-  build_command = "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier"
+  output_path = "${path.module}/billing-notifier/package.zip"
+
+  source_dir = var.enable_remote_build ? "${path.module}/billing-notifier/" : null
+
+  build_command = var.enable_remote_build ? "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier" : ""
+
   build_triggers = {
     requirements = base64sha256(file("${path.module}/billing-notifier/requirements.txt"))
     execute      = base64sha256(file("${path.module}/billing-notifier/pip.sh"))

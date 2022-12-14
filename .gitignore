@@ -49,3 +49,6 @@ test.auto.tfvars*
 
 # Apple
 .DS_Store
+
+# Lambda deployment build
+.package
