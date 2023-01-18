@@ -45,12 +45,15 @@ repos:
                 [^/]+|
             )$
       - id: terraform_tflint
+        # Configure tflint by creating and updating the config file below.
         args: ['--args=--config=__GIT_WORKING_DIR__/.tflint.hcl']
       - id: terraform_tfsec
         files: ^.*.tf$
+        # Configure tfsec by creating and updating the config file below.
         args: ['--args=--config-file=__GIT_WORKING_DIR__/.tfsec-config.yml']
-      # - id: terraform_checkov
-      #   args: ['--args=--download-external-modules true', '--args=--quiet']
+      - id: terraform_checkov
+        # Configure checkov by creating and updating the config file below.
+        args: ['--args=--config-file __GIT_WORKING_DIR__/.checkov-config.yml']
 # Python
   - repo: https://github.com/psf/black
     rev: 22.6.0
@@ -84,6 +87,7 @@ repos:
       - id: mixed-line-ending
         args: ['--fix=lf']
       - id: no-commit-to-branch
+        args: ['--branch', 'develop', '--branch', 'main', '--branch', 'master']
       - id: requirements-txt-fixer
       - id: trailing-whitespace
   - repo: local
