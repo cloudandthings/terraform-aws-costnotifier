@@ -1,0 +1,7 @@
+download-external-modules: true
+quiet: true
+skip-check:
+  # Github: Ensure top-level permissions are not set to write-all
+  - CKV2_GHA_1
+  # Ensure AWS Lambda function is configured to validate code-signing
+  - CKV_AWS_272

@@ -37,6 +37,8 @@ variable "notification_schedule" {
 variable "webhook_urls" {
   type        = list(string)
   description = "Webhook URLs to receive daily cost notifications on either Slack or Teams"
+  # Slack URLs are sensitive, for example
+  sensitive = true
 }
 
 variable "webhook_type" {
