@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.1](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.1.0...v2.1.1) (2023-01-18)
+
+
+### Bug Fixes
+
+* **security:** Mark webhooks variable as sensitive ([#35](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/35)) ([6e3cbe9](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/6e3cbe92151d5b22970fbb6b3d5124f748bcd7b6))
+
 ## [2.1.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.0.0...v2.1.0) (2022-12-14)
 
 
