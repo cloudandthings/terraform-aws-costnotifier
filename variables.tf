@@ -19,6 +19,18 @@ variable "tags" {
   default     = {}
 }
 
+variable "cloudwatch_logs_retention_in_days" {
+  description = "Specifies the number of days you want to retain log events in the specified log group. Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, and 3653."
+  type        = number
+  default     = 14
+}
+
+variable "runtime" {
+  description = "The python runtime for the lambda. If running this from Terraform Cloud this must be python3.8."
+  type        = string
+  default     = "python3.8"
+}
+
 #---------------------------------------------------------------------------------------------------
 # Notifications
 #---------------------------------------------------------------------------------------------------
@@ -77,6 +89,18 @@ variable "red_threshold" {
 # IAM
 #---------------------------------------------------------------------------------------------------
 
+variable "create_role" {
+  description = "Controls whether IAM role for Lambda Function should be created"
+  type        = bool
+  default     = true
+}
+
+variable "lambda_role" {
+  description = "IAM role ARN attached to the Lambda Function. This governs both who / what can invoke your Lambda Function, as well as what resources our Lambda Function has access to. See Lambda Permission Model for more details."
+  type        = string
+  default     = ""
+}
+
 variable "permissions_boundary" {
   description = "ARN of the policy that is used to set the permissions boundary for the role."
   type        = string
@@ -107,14 +131,4 @@ variable "kms_key_arn" {
   description = "The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources."
   type        = string
   default     = null
-}
-
-#---------------------------------------------------------------------------------------------------
-# Build
-#---------------------------------------------------------------------------------------------------
-
-variable "enable_remote_build" {
-  description = "Whether to enable remote building for the lambda function package ardhive, otherwise a local copy of the archive is used."
-  type        = bool
-  default     = false
 }

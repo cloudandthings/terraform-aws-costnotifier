@@ -10,7 +10,7 @@ module "example" {
   naming_prefix = "costnotifier-example-slack"
   account_name  = "cloudandthings - master"
 
-  webhook_urls = ["https://api.slack.com/messaging/webhooks"] # slack webhook
+  webhook_urls = ["https://hooks.slack.com"] # slack webhook
   webhook_type = "slack"
 
   notification_schedule = "cron(0 7 ? * MON-FRI *)"
@@ -26,7 +26,7 @@ module "example" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS profile | `string` | `null` | no |
-| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `null` | no |
+| <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `"af-south-1"` | no |
 
 ----
 ### Modules

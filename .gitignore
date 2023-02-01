@@ -52,3 +52,5 @@ test.auto.tfvars*
 
 # Lambda deployment build
 .package
+.external_modules
+builds/
