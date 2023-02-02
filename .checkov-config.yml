@@ -5,3 +5,5 @@ skip-check:
   - CKV2_GHA_1
   # Ensure AWS Lambda function is configured to validate code-signing
   - CKV_AWS_272
+  # Function URLs are disabled
+  - CKV_AWS_258

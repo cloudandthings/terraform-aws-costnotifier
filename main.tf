@@ -5,7 +5,7 @@ resource "aws_cloudwatch_event_rule" "billing_notifier_lambda_event_rule" {
 resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
   rule      = aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule.name
   target_id = "check-non-compliant-report-event-rule"
-  arn       = module.billing_notifier_lambda.lambda_function.arn
+  arn       = module.billing_notifier_lambda.lambda_function_arn
   depends_on = [
     module.billing_notifier_lambda
   ]
@@ -14,7 +14,7 @@ resource "aws_cloudwatch_event_target" "billing_notifier_lambda_event_target" {
 data "aws_caller_identity" "current" {}
 
 resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
-  function_name = module.billing_notifier_lambda.lambda_function.function_name
+  function_name = module.billing_notifier_lambda.lambda_function_name
 
   statement_id = "AllowExecutionFromCloudWatch"
   action       = "lambda:InvokeFunction"
@@ -28,86 +28,54 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   ]
 }
 
-locals {
-  vpc_config = (
-    length(var.security_group_ids) + length(var.subnet_ids) == 0
-    ? null
-    : {
-      security_group_ids = var.security_group_ids
-      subnet_ids         = var.subnet_ids
-    }
-  )
-
-}
-
 #tfsec:ignore:aws-lambda-enable-tracing
 module "billing_notifier_lambda" {
+  source  = "terraform-aws-modules/lambda/aws"
+  version = "4.9.0"
 
-  # Temporary until this is merged:
-  # https://github.com/nozaq/terraform-aws-lambda-auto-package/pull/30
-  source = "./modules/external/nozaq/lambda-auto-package"
-  # source  = "nozaq/lambda-auto-package/aws"
-  # version = "0.4.0"
-
-  ####################################
-  # General
   function_name = var.naming_prefix
   description   = var.lambda_description
 
   handler = "handler.report_cost"
-  runtime = "python3.7"
-
+  runtime = var.runtime
   timeout = 300
-  tags    = var.tags
 
-  ####################################
-  # Build
-
-  output_path = "${path.module}/billing-notifier/package.zip"
-
-  source_dir = var.enable_remote_build ? "${path.module}/billing-notifier/" : null
-
-  build_command = var.enable_remote_build ? "${path.module}/billing-notifier/pip.sh ${path.module}/billing-notifier" : ""
-
-  build_triggers = {
-    requirements = base64sha256(file("${path.module}/billing-notifier/requirements.txt"))
-    execute      = base64sha256(file("${path.module}/billing-notifier/pip.sh"))
-  }
-
-  ####################################
-  # KMS
-
-  # The ARN of the KMS Key to use when encrypting log data.
-  kms_key_id = var.kms_key_arn
-  # The ARN of the KMS Key to use when encrypting environment variables.
-  # Ignored unless `environment` is specified.
-  lambda_kms_key_arn = var.kms_key_arn
-
-  ####################################
-  # IAM
-  iam_role_name_prefix = var.naming_prefix
-
-  policy_arns = [
-    "arn:aws:iam::aws:policy/service-role/AWSCostAndUsageReportAutomationPolicy",
-    aws_iam_policy.cost_explorer_access_policy.arn
+  source_path = [
+    {
+      path             = "${path.module}/billing-notifier/",
+      pip_requirements = "${path.module}/billing-notifier/requirements.txt"
+    }
   ]
 
-  permissions_boundary = var.permissions_boundary
+  cloudwatch_logs_retention_in_days = var.cloudwatch_logs_retention_in_days
+  cloudwatch_logs_kms_key_id        = var.kms_key_arn
+  kms_key_arn                       = var.kms_key_arn
 
-  ####################################
-  # Environment
-  environment = {
-    variables = {
-      WEBHOOK_URLS     = jsonencode(var.webhook_urls)
-      WEBHOOK_TYPE     = lower(var.webhook_type)
-      AWS_ACCOUNT_NAME = var.account_name
-      SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "DISABLED"
-      AMBER_THRESHOLD  = var.amber_threshold
-      RED_THRESHOLD    = var.red_threshold
-    }
+  # IAM
+  create_role              = var.create_role
+  attach_policy_statements = var.create_role
+
+  lambda_role               = var.lambda_role
+  role_permissions_boundary = var.permissions_boundary
+  role_name                 = var.naming_prefix
+  role_description          = "Role used for the AWS Cost Notifier"
+  policy_statements         = local.policy_statements
+
+  # Networking
+  vpc_security_group_ids = var.security_group_ids
+  vpc_subnet_ids         = var.subnet_ids
+
+  environment_variables = {
+    WEBHOOK_URLS     = jsonencode(var.webhook_urls)
+    WEBHOOK_TYPE     = lower(var.webhook_type)
+    AWS_ACCOUNT_NAME = var.account_name
+    SNS_ARN          = local.no_of_emails != 0 ? aws_sns_topic.cost_notifier[0].arn : "DISABLED"
+    AMBER_THRESHOLD  = var.amber_threshold
+    RED_THRESHOLD    = var.red_threshold
   }
 
-  ####################################
-  # Network
-  vpc_config = local.vpc_config
+  tags = var.tags
+
+  create_lambda_function_url = false
+
 }
