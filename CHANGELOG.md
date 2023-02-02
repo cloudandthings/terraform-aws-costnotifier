@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.1.1...v3.0.0) (2023-02-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* Allow IAM role to be passed to the module ([#37](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/37))
+
+### Features
+
+* Allow IAM role to be passed to the module ([#37](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/37)) ([216ec0b](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/216ec0b77515058da2cd228e6d7e0fa1a01d5255))
+
 ## [2.1.1](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.1.0...v2.1.1) (2023-01-18)
 
 
