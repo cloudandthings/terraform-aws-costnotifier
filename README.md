@@ -31,10 +31,13 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | <a name="input_notification_schedule"></a> [notification\_schedule](#input\_notification\_schedule) | CRON expression to schedule notification | `string` | `"cron(0 20 ? * MON-SUN *)"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | ARN of the policy that is used to set the permissions boundary for the role. | `string` | `null` | no |
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
-| <a name="input_runtime"></a> [runtime](#input\_runtime) | The python runtime for the lambda. If running this from Terraform Cloud this must be python3.8. | `string` | `"python3.8"` | no |
+| <a name="input_runtime"></a> [runtime](#input\_runtime) | The python runtime for the lambda. Currently only `python3.8` is supported. | `string` | `"python3.8"` | no |
+| <a name="input_s3_bucket"></a> [s3\_bucket](#input\_s3\_bucket) | S3 bucket for deployment package. | `string` | `null` | no |
+| <a name="input_s3_key"></a> [s3\_key](#input\_s3\_key) | S3 object key for deployment package. Otherwise, defaults to `var.naming_prefix/local.deployment_filename`. | `string` | `null` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_subnet_ids"></a> [subnet\_ids](#input\_subnet\_ids) | List of VPC subnet IDs associated with the Lambda function. | `list(string)` | `[]` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to the resources. | `map(string)` | `{}` | no |
+| <a name="input_upload_deployment_to_s3"></a> [upload\_deployment\_to\_s3](#input\_upload\_deployment\_to\_s3) | If `true`, the deployment package within this module repo will be copied to S3. If `false` then the S3 object must be uploaded separately. | `bool` | `false` | no |
 | <a name="input_webhook_type"></a> [webhook\_type](#input\_webhook\_type) | Either "slack" or "teams". | `string` | `"slack"` | no |
 | <a name="input_webhook_urls"></a> [webhook\_urls](#input\_webhook\_urls) | Webhook URLs to receive daily cost notifications on either Slack or Teams | `list(string)` | n/a | yes |
 
@@ -76,6 +79,7 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | [aws_cloudwatch_event_rule.billing_notifier_lambda_event_rule](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
 | [aws_cloudwatch_event_target.billing_notifier_lambda_event_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
 | [aws_lambda_permission.billing_notifier_lambda_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_s3_object.deployment](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
 | [aws_sns_topic.cost_notifier](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
 | [aws_sns_topic_subscription.cost_notifier](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |

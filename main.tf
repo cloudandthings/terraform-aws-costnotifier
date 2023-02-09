@@ -28,6 +28,29 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
   ]
 }
 
+locals {
+
+  deployment_filename = "costnotifier-${var.runtime}.zip"
+  deployment_path     = "${path.module}/${local.deployment_filename}"
+
+  use_s3 = (
+    var.upload_deployment_to_s3 ||
+    var.s3_bucket != null ||
+    var.s3_key != null
+  )
+
+  s3_key = coalesce(var.s3_key, join("/", [var.naming_prefix, local.deployment_filename]))
+}
+
+resource "aws_s3_object" "deployment" {
+  count  = var.upload_deployment_to_s3 ? 1 : 0
+  bucket = var.s3_bucket
+  key    = local.s3_key
+  source = local.deployment_path
+
+  etag = filemd5(local.deployment_path)
+}
+
 #tfsec:ignore:aws-lambda-enable-tracing
 module "billing_notifier_lambda" {
   source  = "terraform-aws-modules/lambda/aws"
@@ -36,16 +59,21 @@ module "billing_notifier_lambda" {
   function_name = var.naming_prefix
   description   = var.lambda_description
 
-  handler = "handler.report_cost"
+  handler = "app.lambda_handler"
   runtime = var.runtime
   timeout = 300
 
-  source_path = [
-    {
-      path             = "${path.module}/billing-notifier/",
-      pip_requirements = "${path.module}/billing-notifier/requirements.txt"
+  create_package         = false
+  local_existing_package = local.deployment_path
+
+  s3_existing_package = (
+    local.use_s3
+    ? {
+      bucket = var.s3_bucket
+      key    = local.s3_key
     }
-  ]
+    : null
+  )
 
   cloudwatch_logs_retention_in_days = var.cloudwatch_logs_retention_in_days
   cloudwatch_logs_kms_key_id        = var.kms_key_arn

@@ -1,0 +1,10 @@
+# TEST REQUIREMENTS
+
+# To use: pip install -r tests/requirements.txt
+
+# Include main requirements
+-r ../costnotifier/requirements.txt
+
+# Additional packages to install when doing testing
+pytest
+tftest
