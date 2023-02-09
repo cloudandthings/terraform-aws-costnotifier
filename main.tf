@@ -34,16 +34,14 @@ locals {
   deployment_path     = "${path.module}/${local.deployment_filename}"
 
   use_s3 = (
-    var.upload_deployment_to_s3 ||
-    var.s3_bucket != null ||
-    var.s3_key != null
+    var.upload_deployment_to_s3 && var.s3_bucket != null
   )
 
   s3_key = coalesce(var.s3_key, join("/", [var.naming_prefix, local.deployment_filename]))
 }
 
 resource "aws_s3_object" "deployment" {
-  count  = var.upload_deployment_to_s3 ? 1 : 0
+  count  = local.use_s3 && var.upload_deployment_to_s3 ? 1 : 0
   bucket = var.s3_bucket
   key    = local.s3_key
   source = local.deployment_path

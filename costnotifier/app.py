@@ -14,7 +14,7 @@ n_days = 7
 AMBER_THRESHOLD = float(os.environ.get("AMBER_THRESHOLD", 20))
 RED_THRESHOLD = float(os.environ.get("RED_THRESHOLD", 50))
 
-WEBHOOK_URLS = json.loads(os.environ.get("WEBHOOK_URLS", []))
+WEBHOOK_URLS = json.loads(os.environ.get("WEBHOOK_URLS", "[]"))
 WEBHOOK_TYPE = os.environ.get("WEBHOOK_TYPE", "slack")
 
 TOPIC_ARN = os.environ.get("SNS_ARN", "DISABLED")

@@ -11,8 +11,6 @@ module "billing_notifier_root_account_teams" {
 
   notification_schedule = "cron(0 20 * * ? *)"
 
-  ### Uncomment to fetch the deployment package from S3
+  ### Uncomment to upload and fetch the deployment package from S3
   # s3_bucket = "my_s3_bucket"
-  ### Uncomment to upload the local deployment package to S3
-  # upload_deployment_to_s3 = true
 }

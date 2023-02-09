@@ -18,6 +18,9 @@ jobs:
   # CHECK DEPLOYMENT
   #--------------------------------------------------------------
   check-deployment:
+    env:
+      FUNCTION: costnotifier
+      RUNTIME: python3.9
     # For public repos use runs-on: ubuntu-latest
     # For private repos use runs-on: self-hosted
     runs-on: ${{ vars.RUNS_ON }}
@@ -27,16 +30,16 @@ jobs:
       # To test whether the deployment package is up to date, we only check the application code (excluding dependencies).
       - name: 🛠️ build deployment
         run: |
-          cp myfunction-python3.9.zip myfunction-python3.9.zip_original
-          cd myfunction
-          zip -r ../myfunction-python3.9.zip .
+          cp $FUNCTION-$RUNTIME.zip $FUNCTION-$RUNTIME.zip_original
+          cd $FUNCTION
+          zip -r ../$FUNCTION-$RUNTIME.zip .
       - name: 🔍 check deployment
         run: |
           # Compare length and names of files in Zip.
           # Building in Docker doesn't work, some files are still different.
-          [[ -f myfunction-python3.9.zip ]] || { echo "Deployment file not found."; exit 1; }
+          [[ -f $FUNCTION-$RUNTIME.zip ]] || { echo "Deployment file not found."; exit 1; }
           diff \
-            <(unzip -vqq myfunction-python3.9.zip  | awk '{$2=""; $3=""; $4=""; $5=""; $6=""; print}' | sort -k3 -f) \
-            <(unzip -vqq myfunction-python3.9.zip_original  | awk '{$2=""; $3=""; $4=""; $5=""; $6=""; print}' | sort -k3 -f)
+            <(unzip -vqq $FUNCTION-$RUNTIME.zip  | awk '{$2=""; $3=""; $4=""; $5=""; $6=""; print}' | sort -k3 -f) \
+            <(unzip -vqq $FUNCTION-$RUNTIME.zip_original  | awk '{$2=""; $3=""; $4=""; $5=""; $6=""; print}' | sort -k3 -f)
           FILES_CHANGED=$?
           echo FILES_CHANGED=$FILES_CHANGED

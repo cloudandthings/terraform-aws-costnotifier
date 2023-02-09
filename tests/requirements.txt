@@ -6,5 +6,6 @@
 -r ../costnotifier/requirements.txt
 
 # Additional packages to install when doing testing
+boto3
 pytest
 tftest

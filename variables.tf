@@ -26,13 +26,13 @@ variable "cloudwatch_logs_retention_in_days" {
 }
 
 variable "runtime" {
-  description = "The python runtime for the lambda. Currently only `python3.8` is supported."
+  description = "The python runtime for the lambda. Currently only `python3.9` is supported."
   type        = string
-  default     = "python3.8"
+  default     = "python3.9"
 
   validation {
-    condition     = contains(["python3.8"], lower(var.runtime))
-    error_message = "Must be one of: \"python3.8\"."
+    condition     = contains(["python3.9"], lower(var.runtime))
+    error_message = "Must be one of: \"python3.9\"."
   }
 }
 
@@ -155,7 +155,7 @@ variable "s3_key" {
 }
 
 variable "upload_deployment_to_s3" {
-  description = "If `true`, the deployment package within this module repo will be copied to S3. If `false` then the S3 object must be uploaded separately."
+  description = "If `true`, the deployment package within this module repo will be copied to S3. If `false` then the S3 object must be uploaded separately. Ignored if `s3_bucket` is null."
   type        = bool
-  default     = false
+  default     = true
 }

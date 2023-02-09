@@ -15,7 +15,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 - [ ] Add [semantics prefix](#semantic-pull-requests) to your PR or Commits (at least one of your commit groups)
 - [ ] CI tests are passing
-- [ ] README.md has been updated after any changes to variables and outputs. See https://github.com/cloudandthings/terraform-aws-clickops-notifer/#doc-generation
+- [ ] README.md has been updated after any changes to variables and outputs. See https://github.com/cloudandthings/terraform-aws-clickops-notifier/#doc-generation
 - [ ] Run pre-commit hooks `pre-commit run -a`
 
 ## Semantic Pull Requests
