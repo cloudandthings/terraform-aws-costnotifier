@@ -10,4 +10,7 @@ module "example" {
   webhook_type = "slack"
 
   notification_schedule = "cron(0 7 ? * MON-FRI *)"
+
+  ### Uncomment to upload and fetch the deployment package from S3
+  # s3_bucket = "my_s3_bucket"
 }

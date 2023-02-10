@@ -16,6 +16,8 @@ module "example" {
 
   emails_for_notifications = ["velisa@cat.io", "adan@cat.io"] # Optional
 
+  ### Uncomment to upload and fetch the deployment package from S3
+  # s3_bucket = "my_s3_bucket"
 }
 ```
 ----

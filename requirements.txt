@@ -1,7 +1,9 @@
+# DEV REQUIREMENTS
+
+# To use: pip install -r requirements.txt
+
+# Include test requirements
+-r tests/requirements.txt
+
+# Additional packages to install when doing development
 black
-boto3
-checkov
-flake8
-pre-commit
-pytest
-tftest

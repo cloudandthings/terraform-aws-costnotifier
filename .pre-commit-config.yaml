@@ -11,22 +11,22 @@
 # INSTALL hooks for this workspace
 # pre-commit install
 
-exclude: '^modules/external/.*$'
+exclude: "^modules/external/.*$"
 
 repos:
-# TERRAFORM
+  # TERRAFORM
   # If running tf-docs it must be run first to avoid race condition relating to version constraints.
   # BUG: terraform_docs hook conflicts when used more than once.
   # Workaround with Python
   - repo: local
     hooks:
-    - id: Terraform docs
-      name: Terraform docs
-      entry: python examples/terraform-docs.py
-      language: system
-      types: [python]
-      always_run: true
-      pass_filenames: false
+      - id: Terraform docs
+        name: Terraform docs
+        entry: python examples/terraform-docs.py
+        language: system
+        types: [python]
+        always_run: true
+        pass_filenames: false
 
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.74.1
@@ -40,35 +40,38 @@ repos:
         # [^/]+: Exclude root module. Validation is done via examples/basic
         # see https://github.com/antonbabenko/pre-commit-terraform#terraform_validate
         exclude: |
-            (?x)^(
-                tests/.*|
-                [^/]+|
-            )$
+          (?x)^(
+              tests/.*|
+              [^/]+|
+          )$
       - id: terraform_tflint
         # Configure tflint by creating and updating the config file below.
-        args: ['--args=--config=__GIT_WORKING_DIR__/.tflint.hcl']
-      - id: terraform_tfsec
-        files: ^.*.tf$
-        # Configure tfsec by creating and updating the config file below.
-        args: ['--args=--config-file=__GIT_WORKING_DIR__/.tfsec-config.yml']
-      - id: terraform_checkov
-        # Configure checkov by creating and updating the config file below.
-        args: ['--args=--config-file __GIT_WORKING_DIR__/.checkov-config.yml']
-# Python
+        args: ["--args=--config=__GIT_WORKING_DIR__/.tflint.hcl"]
+      #-----------------------------------------
+      # Moved to .github/.pre-commit-config.yaml
+      #-----------------------------------------
+      # - id: terraform_tfsec
+      #   files: ^.*.tf$
+      #   # Configure tfsec by creating and updating the config file below.
+      #   args: ['--args=--config-file=__GIT_WORKING_DIR__/.tfsec-config.yml']
+      # - id: terraform_checkov
+      #   # Configure checkov by creating and updating the config file below.
+      #   args: ['--args=--config-file __GIT_WORKING_DIR__/.checkov-config.yml']
+  # Python
   - repo: https://github.com/psf/black
     rev: 22.6.0
     hooks:
-    - id: black
+      - id: black
   - repo: https://github.com/pycqa/flake8
     rev: 5.0.4
     hooks:
-    - id: flake8
-# PRECOMMIT - GENERAL
+      - id: flake8
+  # PRECOMMIT - GENERAL
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
     hooks:
       - id: check-added-large-files
-        args: ['--maxkb=1024']
+        args: ["--maxkb=1024"]
       - id: check-case-conflict
       - id: check-json
         exclude: tsconfig.json|devcontainer.json
@@ -81,18 +84,18 @@ repos:
       - id: check-xml
       - id: check-yaml
       - id: detect-aws-credentials
-        args: ['--allow-missing-credentials']
+        args: ["--allow-missing-credentials"]
       - id: detect-private-key
       - id: end-of-file-fixer
       - id: mixed-line-ending
-        args: ['--fix=lf']
+        args: ["--fix=lf"]
       - id: no-commit-to-branch
-        args: ['--branch', 'develop', '--branch', 'main', '--branch', 'master']
+        args: ["--branch", "develop", "--branch", "main", "--branch", "master"]
       - id: requirements-txt-fixer
       - id: trailing-whitespace
   - repo: local
     hooks:
-    -   id: no-vanilla-readme
+      - id: no-vanilla-readme
         name: Ensure README is updated
         entry: "example content; edit to suit your module"
         language: pygrep

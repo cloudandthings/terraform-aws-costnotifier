@@ -26,9 +26,14 @@ variable "cloudwatch_logs_retention_in_days" {
 }
 
 variable "runtime" {
-  description = "The python runtime for the lambda. If running this from Terraform Cloud this must be python3.8."
+  description = "The python runtime for the lambda. Currently only `python3.9` is supported."
   type        = string
-  default     = "python3.8"
+  default     = "python3.9"
+
+  validation {
+    condition     = contains(["python3.9"], lower(var.runtime))
+    error_message = "Must be one of: \"python3.9\"."
+  }
 }
 
 #---------------------------------------------------------------------------------------------------
@@ -131,4 +136,26 @@ variable "kms_key_arn" {
   description = "The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources."
   type        = string
   default     = null
+}
+
+#---------------------------------------------------------------------------------------------------
+# Deployment
+#---------------------------------------------------------------------------------------------------
+
+variable "s3_bucket" {
+  description = "S3 bucket for deployment package."
+  type        = string
+  default     = null
+}
+
+variable "s3_key" {
+  description = "S3 object key for deployment package. Otherwise, defaults to `var.naming_prefix/local.deployment_filename`."
+  type        = string
+  default     = null
+}
+
+variable "upload_deployment_to_s3" {
+  description = "If `true`, the deployment package within this module repo will be copied to S3. If `false` then the S3 object must be uploaded separately. Ignored if `s3_bucket` is null."
+  type        = bool
+  default     = true
 }

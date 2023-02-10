@@ -6,7 +6,7 @@ import requests
 import logging
 import json
 
-logger = logging.getLogger("cost notifier")
+logger = logging.getLogger("costnotifier")
 logger.setLevel(logging.INFO)
 
 n_days = 7
@@ -14,7 +14,7 @@ n_days = 7
 AMBER_THRESHOLD = float(os.environ.get("AMBER_THRESHOLD", 20))
 RED_THRESHOLD = float(os.environ.get("RED_THRESHOLD", 50))
 
-WEBHOOK_URLS = json.loads(os.environ.get("WEBHOOK_URLS", []))
+WEBHOOK_URLS = json.loads(os.environ.get("WEBHOOK_URLS", "[]"))
 WEBHOOK_TYPE = os.environ.get("WEBHOOK_TYPE", "slack")
 
 TOPIC_ARN = os.environ.get("SNS_ARN", "DISABLED")
@@ -77,7 +77,6 @@ def get_days(yesterday):
 
 
 def get_result(result, today, week_ago):
-
     client = boto3.client("ce")
     query = {
         "TimePeriod": {
@@ -147,7 +146,7 @@ def delta(costs):
 
 
 # flake8: noqa: C901
-def report_cost(
+def lambda_handler(
     event, context, result: dict = None, yesterday: str = None, new_method=True
 ):
     """
@@ -171,7 +170,7 @@ def report_cost(
         for x in range(n_days + 1)
         # Include yesterday in the list of days + 1
     ]
-    logging.debug("report_cost, date list for processing: " f"'{list_of_dates}'.")
+    logging.debug("lambda_handler, date list for processing: " f"'{list_of_dates}'.")
 
     account_name = get_account_name()
 
@@ -187,7 +186,6 @@ def report_cost(
                 cost = float(group["Metrics"]["UnblendedCost"]["Amount"])
                 cost_per_day_by_service[key].append(cost)
     else:
-
         # New method, which first creates a dict of dicts
         # then loop over the services and loop over the list_of_dates
         # and this means even for sparse data we get a full list of costs
@@ -207,7 +205,7 @@ def report_cost(
                 )  # fallback for sparse data
                 cost_per_day_by_service[key].append(cost)
 
-    logger.info(f"report_cost, cost per day: '{cost_per_day_by_service}'.")
+    logger.info(f"lambda_handler, cost per day: '{cost_per_day_by_service}'.")
 
     # Sort the map by yesterday's cost
     most_expensive_yesterday = sorted(
@@ -307,7 +305,7 @@ if __name__ == "__main__":
     Run if local.
     """
 
-    cost_per_day_by_service = report_cost(
+    cost_per_day_by_service = lambda_handler(
         None, None, None, yesterday="2022-08-01", new_method=True
     )
     print(cost_per_day_by_service)
