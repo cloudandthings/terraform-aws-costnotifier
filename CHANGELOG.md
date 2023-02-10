@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.2](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.1...v3.1.2) (2023-02-10)
+
+
+### Bug Fixes
+
+* TF dependencies (again) ([#44](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/44)) ([6a379b8](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/6a379b81a66f5f2b57c03b80371702820e173a5d))
+
 ## [3.1.1](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.0...v3.1.1) (2023-02-10)
 
 
