@@ -57,16 +57,16 @@ module "billing_notifier_lambda" {
   runtime = var.runtime
   timeout = 300
 
+  # Where should we get the package from?
   create_package         = false
-  local_existing_package = local.deployment_path
-
+  local_existing_package = var.s3_bucket == null ? local.deployment_path : null
   s3_existing_package = (
-    var.s3_bucket != null
-    ? {
+    var.s3_bucket == null
+    ? null
+    : {
       bucket = var.s3_bucket
       key    = local.s3_key
     }
-    : null
   )
 
   cloudwatch_logs_retention_in_days = var.cloudwatch_logs_retention_in_days
