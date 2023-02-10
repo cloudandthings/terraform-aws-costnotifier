@@ -37,7 +37,7 @@ locals {
 }
 
 resource "aws_s3_object" "deployment" {
-  count  = var.upload_deployment_to_s3 ? 1 : 0
+  count  = var.upload_deployment_to_s3 && (var.s3_bucket != null) ? 1 : 0
   bucket = var.s3_bucket
   key    = local.s3_key
   source = local.deployment_path
