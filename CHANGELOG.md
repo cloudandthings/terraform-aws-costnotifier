@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.0.0...v3.1.0) (2023-02-10)
+
+
+### Features
+
+* Deployment options. Use pre-built package by default. ([#40](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/40)) ([94716bf](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/94716bfbb429f444452f9a0dae53a23b2cdf3e30))
+
 ## [3.0.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v2.1.1...v3.0.0) (2023-02-02)
 
 
