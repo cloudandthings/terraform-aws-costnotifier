@@ -99,5 +99,7 @@ module "billing_notifier_lambda" {
   tags = var.tags
 
   create_lambda_function_url = false
-
+  depends_on = [
+    aws_s3_object.deployment
+  ]
 }
