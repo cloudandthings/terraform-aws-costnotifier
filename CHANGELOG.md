@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.1.3](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.2...v3.1.3) (2023-02-10)
+
+
+### Bug Fixes
+
+* Lambda depends on S3 object ([#46](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/46)) ([ed68dd6](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/ed68dd6eb290a8323b63efe4a42a18794f6f0be6))
+
 ## [3.1.2](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.1...v3.1.2) (2023-02-10)
 
 
