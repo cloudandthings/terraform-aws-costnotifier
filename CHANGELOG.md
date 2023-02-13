@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.2.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.3...v3.2.0) (2023-02-13)
+
+
+### Features
+
+* Support python3.7, 3.8, 3.9 runtimes ([#48](https://github.com/cloudandthings/terraform-aws-costnotifier/issues/48)) ([8f50d43](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/8f50d436da2efef5ed41a598bbdaede3b62b5514))
+
 ## [3.1.3](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.2...v3.1.3) (2023-02-10)
 
 
