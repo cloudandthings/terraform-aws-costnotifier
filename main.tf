@@ -29,7 +29,7 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
 }
 
 locals {
-  deployment_filename = "costnotifier-${var.runtime}.zip"
+  deployment_filename = "deployment-costnotifier-${var.lambda_runtime}.zip"
   deployment_path     = "${path.module}/${local.deployment_filename}"
   s3_key              = coalesce(var.s3_key, join("/", [var.naming_prefix, local.deployment_filename]))
 }
@@ -52,7 +52,7 @@ module "billing_notifier_lambda" {
   description   = var.lambda_description
 
   handler = "app.lambda_handler"
-  runtime = var.runtime
+  runtime = var.lambda_runtime
   timeout = 300
 
   # Where should we get the package from?

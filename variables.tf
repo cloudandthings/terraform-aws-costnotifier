@@ -25,14 +25,18 @@ variable "cloudwatch_logs_retention_in_days" {
   default     = 14
 }
 
-variable "runtime" {
-  description = "The python runtime for the lambda. Currently only `python3.9` is supported."
+variable "lambda_runtime" {
   type        = string
-  default     = "python3.9"
+  description = "The lambda runtime to use. One of: `[\"python3.9\", \"python3.8\", \"python3.7\"]`"
+  default     = "python3.8"
 
   validation {
-    condition     = contains(["python3.9"], lower(var.runtime))
-    error_message = "Must be one of: \"python3.9\"."
+    condition = contains([
+      "python3.9",
+      "python3.8",
+      "python3.7"
+    ], var.lambda_runtime)
+    error_message = "Invalid lambda_runtime provided."
   }
 }
 
