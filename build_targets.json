@@ -1,0 +1,16 @@
+{
+  "include": [
+    {
+      "name": "costnotifier",
+      "runtime": "python3.7"
+    },
+    {
+      "name": "costnotifier",
+      "runtime": "python3.8"
+    },
+    {
+      "name": "costnotifier",
+      "runtime": "python3.9"
+    }
+  ]
+}

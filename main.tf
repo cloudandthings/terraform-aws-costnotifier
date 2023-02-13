@@ -29,11 +29,9 @@ resource "aws_lambda_permission" "billing_notifier_lambda_permission" {
 }
 
 locals {
-
-  deployment_filename = "costnotifier-${var.runtime}.zip"
+  deployment_filename = "deployment-costnotifier-${var.lambda_runtime}.zip"
   deployment_path     = "${path.module}/${local.deployment_filename}"
-
-  s3_key = coalesce(var.s3_key, join("/", [var.naming_prefix, local.deployment_filename]))
+  s3_key              = coalesce(var.s3_key, join("/", [var.naming_prefix, local.deployment_filename]))
 }
 
 resource "aws_s3_object" "deployment" {
@@ -54,7 +52,7 @@ module "billing_notifier_lambda" {
   description   = var.lambda_description
 
   handler = "app.lambda_handler"
-  runtime = var.runtime
+  runtime = var.lambda_runtime
   timeout = 300
 
   # Where should we get the package from?
@@ -69,19 +67,25 @@ module "billing_notifier_lambda" {
     }
   )
 
+  # Publish creation/changes as a new Lambda Function Version
+  publish = true
+
+  create_lambda_function_url = false
+
   cloudwatch_logs_retention_in_days = var.cloudwatch_logs_retention_in_days
   cloudwatch_logs_kms_key_id        = var.kms_key_arn
   kms_key_arn                       = var.kms_key_arn
 
   # IAM
-  create_role              = var.create_role
-  attach_policy_statements = var.create_role
+  create_role = var.create_role
+  lambda_role = var.lambda_role
 
-  lambda_role               = var.lambda_role
   role_permissions_boundary = var.permissions_boundary
   role_name                 = var.naming_prefix
   role_description          = "Role used for the AWS Cost Notifier"
-  policy_statements         = local.policy_statements
+
+  attach_policy_statements = var.create_role
+  policy_statements        = local.policy_statements
 
   # Networking
   vpc_security_group_ids = var.security_group_ids
@@ -98,7 +102,6 @@ module "billing_notifier_lambda" {
 
   tags = var.tags
 
-  create_lambda_function_url = false
   depends_on = [
     aws_s3_object.deployment
   ]

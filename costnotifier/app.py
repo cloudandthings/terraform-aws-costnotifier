@@ -205,7 +205,7 @@ def lambda_handler(
                 )  # fallback for sparse data
                 cost_per_day_by_service[key].append(cost)
 
-    logger.info(f"lambda_handler, cost per day: '{cost_per_day_by_service}'.")
+    logging.info(f"lambda_handler, cost per day: '{cost_per_day_by_service}'.")
 
     # Sort the map by yesterday's cost
     most_expensive_yesterday = sorted(

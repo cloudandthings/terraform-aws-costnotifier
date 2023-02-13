@@ -39,11 +39,11 @@ See `examples` dropdown on Terraform Cloud, or [browse here](/examples/).
 | <a name="input_kms_key_arn"></a> [kms\_key\_arn](#input\_kms\_key\_arn) | The alias, alias ARN, key ID, or key ARN of an AWS KMS key used to encrypt all resources. | `string` | `null` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Lambda function description. | `string` | `"This function sends AWS cost notifications. Source: github.com/cloudandthings/terraform-aws-costnotifier"` | no |
 | <a name="input_lambda_role"></a> [lambda\_role](#input\_lambda\_role) | IAM role ARN attached to the Lambda Function. This governs both who / what can invoke your Lambda Function, as well as what resources our Lambda Function has access to. See Lambda Permission Model for more details. | `string` | `""` | no |
+| <a name="input_lambda_runtime"></a> [lambda\_runtime](#input\_lambda\_runtime) | The lambda runtime to use. One of: `["python3.9", "python3.8", "python3.7"]` | `string` | `"python3.8"` | no |
 | <a name="input_naming_prefix"></a> [naming\_prefix](#input\_naming\_prefix) | Naming prefix used to name all resources | `string` | n/a | yes |
 | <a name="input_notification_schedule"></a> [notification\_schedule](#input\_notification\_schedule) | CRON expression to schedule notification | `string` | `"cron(0 20 ? * MON-SUN *)"` | no |
 | <a name="input_permissions_boundary"></a> [permissions\_boundary](#input\_permissions\_boundary) | ARN of the policy that is used to set the permissions boundary for the role. | `string` | `null` | no |
 | <a name="input_red_threshold"></a> [red\_threshold](#input\_red\_threshold) | Percentage exceeded threshold to send a red alert and notify the slack channel | `string` | `"50"` | no |
-| <a name="input_runtime"></a> [runtime](#input\_runtime) | The python runtime for the lambda. Currently only `python3.9` is supported. | `string` | `"python3.9"` | no |
 | <a name="input_s3_bucket"></a> [s3\_bucket](#input\_s3\_bucket) | S3 bucket for deployment package. | `string` | `null` | no |
 | <a name="input_s3_key"></a> [s3\_key](#input\_s3\_key) | S3 object key for deployment package. Otherwise, defaults to `var.naming_prefix/local.deployment_filename`. | `string` | `null` | no |
 | <a name="input_security_group_ids"></a> [security\_group\_ids](#input\_security\_group\_ids) | List of VPC security group IDs associated with the Lambda function. | `list(string)` | `[]` | no |
