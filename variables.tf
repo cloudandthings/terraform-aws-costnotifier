@@ -65,7 +65,7 @@ variable "webhook_urls" {
 variable "webhook_type" {
   description = "Either \"slack\" or \"teams\"."
   type        = string
-  default     = "slack"
+  default     = "teams"
   validation {
     condition     = contains(["slack", "teams"], lower(var.webhook_type))
     error_message = "Must be one of: \"slack\", \"teams\"."
