@@ -4,7 +4,6 @@ Test the Terraform code in the examples/ directory.
 This test verifies that the example works by executing and testing it.
 """
 
-
 from tests.conftest import terraform_plan
 
 

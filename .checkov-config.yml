@@ -7,3 +7,9 @@ skip-check:
   - CKV_AWS_272
   # Function URLs are disabled
   - CKV_AWS_258
+  # X-Ray tracing is enabled for Lambda (matches existing tfsec:ignore in main.tf)
+  - CKV_AWS_50
+  # Ensure CloudWatch log groups retains logs for at least 1 year (14 days is a deliberate cost-conscious default)
+  - CKV_AWS_338
+  # Ensure Terraform module sources use a commit hash (not applicable to registry-sourced modules, which pin via `version` instead)
+  - CKV_TF_1

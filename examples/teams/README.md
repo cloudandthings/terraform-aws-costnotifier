@@ -27,7 +27,7 @@ module "billing_notifier_root_account_teams" {
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_aws_profile"></a> [aws\_profile](#input\_aws\_profile) | AWS profile | `string` | `null` | no |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | AWS region | `string` | `null` | no |
 
@@ -35,7 +35,7 @@ module "billing_notifier_root_account_teams" {
 ### Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_billing_notifier_root_account_teams"></a> [billing\_notifier\_root\_account\_teams](#module\_billing\_notifier\_root\_account\_teams) | ../../ | n/a |
 
 ----
@@ -52,7 +52,7 @@ No providers.
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.9 |
 | <a name="requirement_null"></a> [null](#requirement\_null) | 3.2.1 |

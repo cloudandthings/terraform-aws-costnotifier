@@ -37,6 +37,18 @@ jobs:
         with:
           python-version: 3.11
       - uses: hashicorp/setup-terraform@v2
+      - name: Install terraform-docs
+        env:
+          TERRAFORM_DOCS_VERSION: v0.24.0
+        run: |
+          curl -sSLo terraform-docs.tar.gz "https://github.com/terraform-docs/terraform-docs/releases/download/${TERRAFORM_DOCS_VERSION}/terraform-docs-${TERRAFORM_DOCS_VERSION}-linux-amd64.tar.gz"
+          tar -xzf terraform-docs.tar.gz terraform-docs
+          chmod +x terraform-docs
+          mkdir -p "$HOME/.local/bin"
+          mv terraform-docs "$HOME/.local/bin/terraform-docs"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          rm terraform-docs.tar.gz
+          "$HOME/.local/bin/terraform-docs" --version
       - name: Install requirements
         run: |
           python -m venv .venv
@@ -59,7 +71,7 @@ jobs:
         if: failure()
         run: |
           LOG_FILE=~/.cache/pre-commit/pre-commit.log
-          [ -f $LOG_FILE ] || cat $LOG_FILE
+          [ -f $LOG_FILE ] && cat $LOG_FILE
 
   #--------------------------------------------------------------
   # TESTS

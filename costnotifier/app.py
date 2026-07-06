@@ -282,11 +282,24 @@ def lambda_handler(
 
     # Send notifications
     for url in WEBHOOK_URLS:
+
+        # Construct a standard Office 365 MessageCard payload
+        payload = {
+            "@type": "MessageCard",
+            "@context": "http://schema.org/extensions",
+            "themeColor": "0076D7",
+            "summary": summary,
+            "sections": [
+                {
+                    "activityTitle": summary,
+                    "text": f"```\n{buffer}\n```",
+                    "markdown": True,
+                }
+            ],
+        }
+
         resp = requests.post(
-            url,
-            json={
-                "text": summary + "\n\n```\n" + buffer + "\n```",
-            },
+            url, headers={"Content-Type": "application/json"}, data=json.dumps(payload)
         )
 
         if resp.status_code != 200:
