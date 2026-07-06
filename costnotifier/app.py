@@ -289,19 +289,17 @@ def lambda_handler(
             "@context": "http://schema.org/extensions",
             "themeColor": "0076D7",
             "summary": summary,
-            "sections": [{
-                "activityTitle": summary,
-                "text": f"```\n{buffer}\n```",
-                "markdown": True
-            }]
+            "sections": [
+                {
+                    "activityTitle": summary,
+                    "text": f"```\n{buffer}\n```",
+                    "markdown": True,
+                }
+            ],
         }
 
-
-
         resp = requests.post(
-            url,
-            headers={"Content-Type": "application/json"},
-            data=json.dumps(payload)
+            url, headers={"Content-Type": "application/json"}, data=json.dumps(payload)
         )
 
         if resp.status_code != 200:
