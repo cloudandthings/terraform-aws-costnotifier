@@ -47,7 +47,7 @@ test.auto.tfvars*
 # VSCode
 *.code-workspace
 
-# Apple
+# Apple SD Store files
 .DS_Store
 
 # Lambda deployment build
