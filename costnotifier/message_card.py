@@ -13,9 +13,7 @@ def adaptive_card_payload(summary, service_costs, total_cost_block):
         "type": "AdaptiveCard",
         "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
         "version": "1.4",
-        "msteams": {
-            "width": "Full"
-        },
+        "msteams": {"width": "Full"},
         "body": [
             {
                 "type": "TextBlock",
@@ -39,9 +37,9 @@ def adaptive_card_payload(summary, service_costs, total_cost_block):
                                     {
                                         "type": "TextBlock",
                                         "text": "**Service**",
-                                        "wrap": True
+                                        "wrap": True,
                                     }
-                                ]
+                                ],
                             },
                             {
                                 "type": "Column",
@@ -50,9 +48,9 @@ def adaptive_card_payload(summary, service_costs, total_cost_block):
                                     {
                                         "type": "TextBlock",
                                         "text": "**$Yday**",
-                                        "horizontalAlignment": "Right"
+                                        "horizontalAlignment": "Right",
                                     }
-                                ]
+                                ],
                             },
                             {
                                 "type": "Column",
@@ -61,9 +59,9 @@ def adaptive_card_payload(summary, service_costs, total_cost_block):
                                     {
                                         "type": "TextBlock",
                                         "text": "**Δ%**",
-                                        "horizontalAlignment": "Right"
+                                        "horizontalAlignment": "Right",
                                     }
-                                ]
+                                ],
                             },
                             {
                                 "type": "Column",
@@ -72,22 +70,19 @@ def adaptive_card_payload(summary, service_costs, total_cost_block):
                                     {
                                         "type": "TextBlock",
                                         "text": "**Last 7d**",
-                                        "horizontalAlignment": "Center"
+                                        "horizontalAlignment": "Center",
                                     }
-                                ]
-                            }
-                        ]
+                                ],
+                            },
+                        ],
                     }
-                ]
+                ],
             },
-            {
-                "type": "Container",
-                "spacing": "Small",
-                "items": service_costs
-            },
-            total_cost_block
-        ]
+            {"type": "Container", "spacing": "Small", "items": service_costs},
+            total_cost_block,
+        ],
     }
+
 
 def add_total_to_card(total_cost, total_delta, total_sparkline):
     """
@@ -99,57 +94,57 @@ def add_total_to_card(total_cost, total_delta, total_sparkline):
     """
 
     return {
-            "type": "ColumnSet",
-            "spacing": "Medium",
-            "separator": True,
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": "50",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "**Total**",
-                            "wrap": True,
-                        }
-                    ],
-                },
-                {
-                    "type": "Column",
-                    "width": "20",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": total_cost,
-                            "horizontalAlignment": "Right",
-                        }
-                    ],
-                },
-                {
-                    "type": "Column",
-                    "width": "15",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": total_delta,
-                            "horizontalAlignment": "Right",
-                        }
-                    ],
-                },
-                {
-                    "type": "Column",
-                    "width": "15",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": total_sparkline,
-                            "horizontalAlignment": "Center",
-                        }
-                    ],
-                },
-            ],
-        }
-    
+        "type": "ColumnSet",
+        "spacing": "Medium",
+        "separator": True,
+        "columns": [
+            {
+                "type": "Column",
+                "width": "50",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": "**Total**",
+                        "wrap": True,
+                    }
+                ],
+            },
+            {
+                "type": "Column",
+                "width": "20",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": total_cost,
+                        "horizontalAlignment": "Right",
+                    }
+                ],
+            },
+            {
+                "type": "Column",
+                "width": "15",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": total_delta,
+                        "horizontalAlignment": "Right",
+                    }
+                ],
+            },
+            {
+                "type": "Column",
+                "width": "15",
+                "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": total_sparkline,
+                        "horizontalAlignment": "Center",
+                    }
+                ],
+            },
+        ],
+    }
+
 
 def add_items_to_card(items, service_name, cost, delta, sparkline):
     """
@@ -216,4 +211,3 @@ def add_items_to_card(items, service_name, cost, delta, sparkline):
             ],
         }
     )
-    

@@ -228,13 +228,13 @@ def lambda_handler(
         )
 
         add_items_to_card(
-            service_costs, 
-            service_name, 
-            f"${costs[-1]:8,.2f}", 
-            f"{delta(costs):4.0f}%", 
-            f"{sparkline(costs):7}"
+            service_costs,
+            service_name,
+            f"${costs[-1]:8,.2f}",
+            f"{delta(costs):4.0f}%",
+            f"{sparkline(costs):7}",
         )
-        
+
     other_costs = [0.0] * (n_days + 1)
     # Index is +1 larger than n_days as it includes yesterday. 0 - 7
     for service_name, costs in most_expensive_yesterday[5:]:
@@ -252,7 +252,7 @@ def lambda_handler(
         "Other",
         f"${other_costs[-1]:8,.2f}",
         f"{delta(other_costs):4.0f}%",
-        f"{sparkline(other_costs):7}"
+        f"{sparkline(other_costs):7}",
     )
 
     total_costs = [0.0] * (n_days + 1)
@@ -269,7 +269,11 @@ def lambda_handler(
         f" {sparkline(total_costs):7}\n"
     )
 
-    total = add_total_to_card(f"{total_costs[-1]:8,.2f}", f"{delta(total_costs):4.0f}%", f"{sparkline(total_costs):7}")
+    total = add_total_to_card(
+        f"{total_costs[-1]:8,.2f}",
+        f"{delta(total_costs):4.0f}%",
+        f"{sparkline(total_costs):7}",
+    )
 
     cost_per_day_by_service["total"] = total_costs[-1]
 
