@@ -310,7 +310,7 @@ def lambda_handler(
             url, headers={"Content-Type": "application/json"}, json=payload
         )
 
-        if resp.status_code != 200:
+        if not 200 <= resp.status_code < 300:
             print("HTTP %s: %s" % (resp.status_code, resp.text))
 
     if TOPIC_ARN == "DISABLED" and len(WEBHOOK_URLS) == 0:
