@@ -6,7 +6,14 @@ import requests
 import logging
 import json
 
-from message_card import adaptive_card_payload, add_items_to_card, add_total_to_card
+try:
+    from message_card import adaptive_card_payload, add_items_to_card, add_total_to_card
+except ImportError:
+    from costnotifier.message_card import (
+        adaptive_card_payload,
+        add_items_to_card,
+        add_total_to_card,
+    )
 
 logger = logging.getLogger("costnotifier")
 logger.setLevel(logging.INFO)
