@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.3.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.2.0...v3.3.0) (2026-07-06)
+
+
+### Features
+
+* Update to the Standard Office 365 Message Card ([41cb911](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/41cb91121cd85177c6f203ec1343be8cfd90cacd))
+
+
+### Bug Fixes
+
+* Cleaning up the code using pre-commits ([18aa088](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/18aa0889a3703fd3c7d960f7ae296345ceaffd99))
+* Fixing the zip files ([fda2fe0](https://github.com/cloudandthings/terraform-aws-costnotifier/commit/fda2fe008221f9be065082f61a5cee49a457bb16))
+
 ## [3.2.0](https://github.com/cloudandthings/terraform-aws-costnotifier/compare/v3.1.3...v3.2.0) (2023-02-13)
 
 
