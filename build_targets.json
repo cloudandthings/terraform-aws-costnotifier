@@ -15,6 +15,10 @@
     {
       "name": "costnotifier",
       "runtime": "python3.13"
+    },
+    {
+      "name": "costnotifier",
+      "runtime": "python3.10"
     }
   ]
 }

@@ -27,12 +27,13 @@ variable "cloudwatch_logs_retention_in_days" {
 
 variable "lambda_runtime" {
   type        = string
-  description = "The lambda runtime to use. One of: `[\"python3.13\", \"python3.9\", \"python3.8\", \"python3.7\"]`"
-  default     = "python3.13"
+  description = "The lambda runtime to use. One of: `[\"python3.13\", \"python3.10\", \"python3.9\", \"python3.8\", \"python3.7\"]`"
+  default     = "python3.10"
 
   validation {
     condition = contains([
       "python3.13",
+      "python3.10",
       "python3.9",
       "python3.8",
       "python3.7"
