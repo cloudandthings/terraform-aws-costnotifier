@@ -6,6 +6,8 @@ import requests
 import logging
 import json
 
+from message_card import adaptive_card_payload, add_items_to_card, add_total_to_card
+
 logger = logging.getLogger("costnotifier")
 logger.setLevel(logging.INFO)
 
@@ -15,7 +17,7 @@ AMBER_THRESHOLD = float(os.environ.get("AMBER_THRESHOLD", 20))
 RED_THRESHOLD = float(os.environ.get("RED_THRESHOLD", 50))
 
 WEBHOOK_URLS = json.loads(os.environ.get("WEBHOOK_URLS", "[]"))
-WEBHOOK_TYPE = os.environ.get("WEBHOOK_TYPE", "slack")
+WEBHOOK_TYPE = os.environ.get("WEBHOOK_TYPE", "teams")  # slack or teams
 
 TOPIC_ARN = os.environ.get("SNS_ARN", "DISABLED")
 
@@ -34,9 +36,9 @@ emojis = {
     },
     "teams": {
         # https://apps.timwhitlock.info/emoji/tables/unicode
-        "good": "&#x2705;",  # green checkmark box
-        "bad": "&#x1F514;",  # bell
-        "ugly": "&#x1F525;",  # fire
+        "good": "✅",  # green checkmark box
+        "bad": "🔔",  # bell
+        "ugly": "🔥",  # fire
     },
 }
 
@@ -217,11 +219,20 @@ def lambda_handler(
 
     buffer = f"{'Service':{longest_name_len}} ${'Yday':8} {'∆%':>5} {'Last 7d':7}\n"
 
+    service_costs = []
     for service_name, costs in most_expensive_yesterday[:5]:
         buffer += (
             f"{service_name:{longest_name_len}}"
             f" ${costs[-1]:8,.2f} {delta(costs):4.0f}%"
             f" {sparkline(costs):7}\n"
+        )
+
+        add_items_to_card(
+            service_costs,
+            service_name,
+            f"${costs[-1]:8,.2f}",
+            f"{delta(costs):4.0f}%",
+            f"{sparkline(costs):7}",
         )
 
     other_costs = [0.0] * (n_days + 1)
@@ -236,6 +247,14 @@ def lambda_handler(
         f" {sparkline(other_costs):7}\n"
     )
 
+    add_items_to_card(
+        service_costs,
+        "Other",
+        f"${other_costs[-1]:8,.2f}",
+        f"{delta(other_costs):4.0f}%",
+        f"{sparkline(other_costs):7}",
+    )
+
     total_costs = [0.0] * (n_days + 1)
     for day_number in range(n_days + 1):
         for service_name, costs in most_expensive_yesterday:
@@ -248,6 +267,12 @@ def lambda_handler(
         f"{'Total':{longest_name_len}}"
         f" ${total_costs[-1]:8,.2f} {delta(total_costs):4.0f}%"
         f" {sparkline(total_costs):7}\n"
+    )
+
+    total = add_total_to_card(
+        f"{total_costs[-1]:8,.2f}",
+        f"{delta(total_costs):4.0f}%",
+        f"{sparkline(total_costs):7}",
     )
 
     cost_per_day_by_service["total"] = total_costs[-1]
@@ -265,9 +290,9 @@ def lambda_handler(
         notify = ""  # Teams does not support @mention via webhooks yet.
 
     summary = (
-        f"{emoji} {yesterday.strftime('%Y-%m-%d')}"
+        f"{emoji} **{yesterday.strftime('%Y-%m-%d')}"
         f" cost for account {account_name}"
-        f" was ${total_costs[-1]:,.2f}"
+        f" was ${total_costs[-1]:,.2f}**"
         f" {emoji} \n {notify}"
     )
 
@@ -283,26 +308,13 @@ def lambda_handler(
     # Send notifications
     for url in WEBHOOK_URLS:
 
-        # Construct a standard Office 365 MessageCard payload
-        payload = {
-            "@type": "MessageCard",
-            "@context": "http://schema.org/extensions",
-            "themeColor": "0076D7",
-            "summary": summary,
-            "sections": [
-                {
-                    "activityTitle": summary,
-                    "text": f"```\n{buffer}\n```",
-                    "markdown": True,
-                }
-            ],
-        }
+        payload = adaptive_card_payload(summary, service_costs, total)
 
         resp = requests.post(
-            url, headers={"Content-Type": "application/json"}, data=json.dumps(payload)
+            url, headers={"Content-Type": "application/json"}, json=payload
         )
 
-        if resp.status_code != 200:
+        if not 200 <= resp.status_code < 300:
             print("HTTP %s: %s" % (resp.status_code, resp.text))
 
     if TOPIC_ARN == "DISABLED" and len(WEBHOOK_URLS) == 0:
